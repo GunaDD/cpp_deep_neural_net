@@ -115,15 +115,25 @@ so dL/dx = dL/dy W^T
 struct Net {
     vector<vector<vector<double>>> W;
     vector<vector<double>> B,H;
-    vector<vector<vector<double>>> bW;
-    vector<vector<double>> bB, bH;
+    vector<vector<vector<double>>> dW;
+    vector<vector<double>> dB, dH;
+ 
+    int num_layers; // num of hidden layer + 1 (includes the output layer)
 
-    Net() {
-        W = vector<vector<vector<double>>> (3, vector<vector<double>>(SZ, vector<double>(SZ)));
-        H = vector<vector<double>> (3, vector<double>(SZ));
-        B = H;
-        bW = W;
-        bB = bH = H;
+    Net(vector<int> layers) { /* vector representing number of hidden unit in each layer */
+        this->num_layers = layers.size();
+
+        /* size of H is 1 more than size of W and B */
+        W = {}, B = {}, H = {};
+        for(int i = 0; i < layers.size();i++) {
+            if(i + 1 < layers.size()) {
+                W.push_back(vector<vector<double>>(layers[i], vector<double>(layers[i+1])));
+                B.push_back(vector<double>(layers[i+1]));
+            }
+            H.push_back(vector<double>(layers[i]));
+        }
+
+        dW = W, dB = B, dH = H;
 
         /* Initialize the weights with Kaiming He initialization */
 
@@ -143,15 +153,21 @@ struct Net {
     }
 
     void load(vector<float> x) {
-        for(int i = 0; i < SZ; i++) {
+        assert(H[0].size() == x.size());
+
+        for(int i = 0; i < x.size(); i++) {
             H[0][i] = x[i];
         }
     }
 
     void forward() {
-        for(int l = 0; l < 2; l++) {    
-            for(int i = 0; i < SZ; i++) {
-                for(int k = 0; k < SZ; k++) {
+        for(int l = 0; l + 1 < num_layers; l++) {  
+            assert(W[l].size() == H[l].size());
+            assert(W[l].size() > 0);
+            assert(W[l][0].size() == H[l+1].size());
+
+            for(int i = 0; i < H[l+1].size(); i++) {
+                for(int k = 0; k < H[l].size(); k++) {
                     H[l+1][i] += H[l][k] * W[l][k][i]; 
                 }
                 H[l+1][i] += B[l][i];
@@ -162,47 +178,54 @@ struct Net {
 
     /* Loss = -sum log softmax_{} */
 
-    double softmax(int y) {
+    vector<double> softmax(vector<double> out_layer) {
+        assert(out_layer.size() == 10); /* assuming output layer has 10 units */
+
         double sum = 0;
-        for(int i = 0; i < SZ; i++) {
-            sum += exp(H[2][i]);
+        for(int i = 0; i < out_layer.size(); i++) {
+            sum += exp(out_layer[i]);
         }
-        return exp(H[2][y]) / sum;
+
+        vector<double> res;
+        for(int i = 0; i < out_layer.size(); i++) {
+            res.push_back(exp(out_layer[i]) / sum);
+        } 
+        return res;
     }   
 
-    double multiclass_cross_entropy_loss(vector<int> y) {
-        double sum = 0;
-        for(int i = 0; i < SZ; i++) {
-            sum += log(softmax(y[i]));
-        }
-        sum = -sum; 
-        return sum;
+    /* multiclass cross-entropy loss */
+    double cost(uint8_t label) {
+        vector<double> applied_softmax = softmax(H[num_layers - 1]);
+        return -log(applied_softmax[label]);
     }
 
-    void backward(vector<uint8_t> y) {
+    void backward(uint8_t y) {
         // initalizing the first dL/dy
 
-        for(int i = 0; i < SZ; i++) {
-            bH[2][i] = exp(H[2][y[i]]);
-            if (y[i] == i) {
+        assert(dH[num_layers - 1].size() == 10);
+        for(int i = 0; i < 10; i++) {
+            dH[num_layers - 1][i] = exp(H[num_layers - 1][i]);
+            if (y == i) {
                 for(int k = 0; k < 10; k++) {
-                    bH[2][i] -= exp(H[2][k]);
+                    dH[num_layers - 1][i] -= exp(H[num_layers - 1][k]);
                 }
             }
         }
+        
+        for(int l = num_layers - 2; l >= 0; l--) {  
+            /* y = H[l+1], x = H[l], W = W[l], b = B[l]
+            dL/dy = bH[l+1], dL/dx = bH[l] */
 
-        for(int l = 1; l >= 0; l--) {  
-            // y = H[l+1], x = H[l], W = W[l], b = B[l]
-            // dL/dy = bH[l+1], dL/dx = bH[l]
-
-            for(int i = 0; i < SZ; i++) {
+            for(int i = 0; i < H[l].size(); i++) { // iterate over X's
                 // update dL/dW
-                for(int k = 0; k < SZ; k++) {
-                    bW[l][i][k] = bH[l+1][i] * H[l][k];
-                }
+                for(int k = 0; k < H[l+1].size(); k++) { // iterate over Y's
+                    dW[l][i][k] = dH[l+1][k] * H[l][i];
+                }      
+            }
 
+            for(int k = 0; k < H[l+1].size(); k++) {
                 // update dL/db = dL/dy
-                bB[l][i] = bH[l+1][i];   
+                dB[l][k] = dH[l+1][k];
             }
 
             // dL/dx = dL/dy * W^T
@@ -215,17 +238,18 @@ struct Net {
             particularly if xW + b < 0, then dL/dx = 0
             */
 
-            for(int i = 0; i < SZ; i++) {
+            for(int i = 0; i < H[l].size(); i++) { // iterate over X's
+
                 double sum = 0;
-                for(int k = 0; k < SZ; k++) {
+                for(int k = 0; k < H[l+1].size(); k++) {
                     sum += H[l][i] * W[l][i][k] + B[l][i];
                 }
 
                 if (sum < 0) { // due to the ReLU
-                    bH[l][i] = 0; 
+                    dH[l][i] = 0; 
                 } else {
-                    for(int k = 0; k < SZ; k++) {
-                        bH[l][i] += bH[l+1][k] * W[l][i][k]; // recall W[i,k] = W^T[k, i]
+                    for(int k = 0; k < H[l+1].size(); k++) {
+                        dH[l][i] += dH[l+1][k] * W[l][i][k]; // recall W[i,k] = W^T[k, i]
                     }
                 }
             }
@@ -235,11 +259,11 @@ struct Net {
 
     void step(double learning_rate) {
         // update weights & biases
-        for(int l = 0; l < 2; l++) {
-            for(int i = 0; i < SZ; i++) {
-                B[l][i] -= learning_rate * bB[l][i];
-                for(int k = 0; k < SZ; k++) {
-                    W[l][i][k] -= learning_rate * bW[l][i][k];
+        for(int l = 0; l + 1 < num_layers; l++) {
+            for(int i = 0; i < H[l].size(); i++) {
+                B[l][i] -= learning_rate * dB[l][i];
+                for(int k = 0; k < H[l+1].size(); k++) {
+                    W[l][i][k] -= learning_rate * dW[l][i][k];
                 }
             }
         }
@@ -247,37 +271,70 @@ struct Net {
 
     void zero_grad() {
         // reset the gradients  
-        for(int l = 0; l < 3; l++) {
-            for(int i = 0; i < SZ; i++) {
-                bB[l][i] = 0;
-                bH[l][i] = 0;
+        for(int l = 0; l < num_layers; l++) {
+            for(int i = 0; i < dH[l].size(); i++) {
+                dH[l][i] = 0;
                 H[l][i] = 0;
-                for(int k = 0; k < SZ; k++) {
-                    bW[l][i][k] = 0;
+            }
+        }
+
+        for(int l = 0; l + 1 < num_layers; l++) {
+            assert(dB[l].size() == H[l+1].size());
+            for(int i = 0; i < H[l+1].size(); i++) {
+                dB[l][i] = 0;
+            }
+            assert(dW[l].size() == H[l].size());
+            assert(dW[l].size() > 0);
+            assert(dW[l][0].size() == H[l+1].size());
+            for(int i = 0; i < H[l].size(); i++) {
+                for(int k = 0; k < H[l+1].size(); k++) {
+                    dW[l][i][k] = 0;
                 }
             }
         }
     }
 
-    void train(vector<float> x, vector<uint8_t> y, int num_epochs, double learning_rate) {
-        // init(); // start off with random weights
+    void train(vector<vector<float>> x, vector<uint8_t> y, int num_epochs, double learning_rate) {
+        assert(x.size() == y.size());
+        assert(x[0].size() == 28*28);
 
         for(int n = 0; n < num_epochs; n++) {
+            /* one pass over all training data */
+            double total_loss = 0;
+
             for(int m = 0; m < y.size(); m++) {
-                load(x);
+                load(x[m]);
                 forward();
-                backward(y);
+                total_loss += cost(y[m]);
+                backward(y[m]);
                 step(learning_rate);
                 zero_grad();
             }
-        }   
 
+            cout << "epoch : " << n << " loss : " << total_loss << endl; 
+        }   
+    }
+
+    int eval(vector<float> x, int label) {
+        // cout << "receive " << label << '\n';
+        load(x);
+        forward();
+        vector<double> applied_softmax = softmax(H[num_layers - 1]);
+        assert(applied_softmax.size() == 10);
+
+        int argmax = 0;
+        for(int i = 0; i < 10; i++) {
+            if(applied_softmax[argmax] < applied_softmax[i]) {
+                argmax = i;
+            }
+        }
+        return argmax;
     }
 };
 
 struct Dataset {
-    std::vector<float>  images;  // size = n * rows * cols
-    std::vector<uint8_t> labels; // size = n
+    std::vector<vector<float>> images;  
+    std::vector<uint8_t> labels;
     uint32_t n;
     constexpr static uint32_t rows = 28, cols = 28;
 };
@@ -286,16 +343,16 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
     Dataset ds;
     ds.n = n;
 
-    /* load image as floats */
+    ds.images = vector<std::vector<float>>(n, vector<float>(Dataset::rows * Dataset::cols));
+
     std::ifstream x(img_bin, std::ios::binary);
     if (!x) throw std::runtime_error("cannot open " + img_bin);
-    ds.images.resize(n * Dataset::rows * Dataset::cols);
-    
-    x.read(reinterpret_cast<char*>(ds.images.data()),
-           ds.images.size() * sizeof(float));
-    if (!x) throw std::runtime_error("failed reading images");
 
-    /* load labels as uint_8 */
+    for (uint32_t i = 0; i < n; ++i) {
+        x.read(reinterpret_cast<char*>(ds.images[i].data()), Dataset::rows * Dataset::cols * sizeof(float));
+        if (!x) throw std::runtime_error("failed reading image #" + std::to_string(i));
+    }
+
     std::ifstream y(lbl_bin, std::ios::binary);
     if (!y) throw std::runtime_error("cannot open " + lbl_bin);
     ds.labels.resize(n);
@@ -306,16 +363,29 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    Dataset ds = load("../data/mnist/train-images.f32", "../data/mnist/train-labels.u8", 10);
+    const int num_samples = 10;
+    const int num_epochs = 10;
+    
+    vector<int> layers = {28*28, 28*28, 10};
+
+    Dataset ds = load("../data/mnist/train-images.f32", "../data/mnist/train-labels.u8", num_samples);
 
     /* normalize */
     for(auto &x:ds.images) {
-        x /= 255.0;
+        for(auto &y: x) {
+            y /= 255.0;
+        }
     }
 
-    Net nn;
-    nn.train(ds.images, ds.labels, 10, 0.001);
+    Net nn(layers); // takes in num_layers as parameter
 
-    
+    cout << "ds.images.size = " << ds.images.size() << " ds.labels.size = " << ds.labels.size() << endl;
+    cout << "ds.images[0].size = " << ds.images[0].size() << endl;
+
+    nn.train(ds.images, ds.labels, num_epochs, 0.001);
+
+    for(int k = 0; k < num_samples; k++) {
+        cout << "predicted: " << nn.eval(ds.images[k], ds.labels[k]) << " true label: " << int(ds.labels[k]) << endl;
+    }
 
 }
