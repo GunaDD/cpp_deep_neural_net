@@ -204,16 +204,61 @@ struct Net {
             // y = xW + b
             // clean this up later with matmul and transpose functions
 
+            /*
+            Also note how the activation function (relu) affects the gradient
+            particularly if xW + b < 0, then dL/dx = 0
+            */
+
             for(int i = 0; i < SZ; i++) {
+                double sum = 0;
                 for(int k = 0; k < SZ; k++) {
-                    bH[l][i] += bH[l+1][k] * W[l][i][k]; // recall W[i,k] = W^T[k, i]
+                    sum += H[l][i] * W[l][i][k] + B[l][i];
+                }
+
+                if (sum < 0) { // due to the ReLU
+                    bH[l][i] = 0; 
+                } else {
+                    for(int k = 0; k < SZ; k++) {
+                        bH[l][i] += bH[l+1][k] * W[l][i][k]; // recall W[i,k] = W^T[k, i]
+                    }
                 }
             }
 
         }
     }
 
+    void step(int learning_rate) {
+        // update weights & biases
+        for(int l = 0; l < 2; l++) {
+            for(int i = 0; i < SZ; i++) {
+                B[l][i] -= learning_rate * bB[l][i];
+                H[l][i] -= learning_rate * bH[l][i];
+                for(int k = 0; k < SZ; k++) {
+                    W[l][i][k] -= learning_rate * bW[l][i][k];
+                }
+            }
+        }
+    }
 
+    void zero_grad() {
+        // reset the gradients  
+        for(int l = 0; l < 2; l++) {
+            for(int i = 0; i < SZ; i++) {
+                bB[l][i] = 0;
+                bH[l][i] = 0;
+                for(int k = 0; k < SZ; k++) {
+                    bW[l][i][k] = 0;
+                }
+            }
+        }
+    }
+
+    void train(int num_epochs, int learning_rate) {
+        for(int n = 0; n < num_epochs; n++) {
+            step(learning_rate);
+            zero_grad();
+        }   
+    }
 } net;
 
 int main() {
