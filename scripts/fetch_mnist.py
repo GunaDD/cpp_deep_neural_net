@@ -13,7 +13,7 @@ def read_idx(path):
             raise ValueError('bad magic')
 
 root = pathlib.Path('../data/mnist')
-x = read_idx(root/'train-images-idx3-ubyte')
-y = read_idx(root/'train-labels-idx1-ubyte')
-x.astype('float32').tofile(root/'train-images.f32')   
-y.tofile(root/'train-labels.u8')                      
+x = read_idx(root/'t10k-images-idx3-ubyte')
+y = read_idx(root/'t10k-labels-idx1-ubyte')
+x.astype('float32').tofile(root/'t10k-images.f32')   
+y.tofile(root/'t10k-labels.u8')                      

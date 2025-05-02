@@ -115,6 +115,44 @@ so dL/dx = dL/dy W^T
 
 */
 
+/*
+
+Summary:
+For batch size = 1
+* dL / dW = matmul(x^T, dL/dy)
+* dL / db = dL / dy
+* dL / dx = matmul(dL/dy, W^T)
+
+Extending to batch size > 1
+* dL / dW : the loss is the sum over all elements in the batch
+dL / dW = matmul(x_1^T, dL / dy) + ... + matmul(x_k^T, dL / dy)
+        = matmul(X^T, dL / dy)
+        the dL / dy here differ in that we stack each dL / dy for each item in the batch
+        so dimension of dL / dy is B x N
+
+* dL / db = [ \sum dL/dy_1, ...., \sum dL / dy_N] where \sum run over all batchs
+
+* dL / dX =  matmul(dL / dY, W^T) 
+to see this 
+we notice that dL / dX is equal to
+[   [dL / dx (for batch 1)]
+    [dL / dx (for batch 2)]
+    .
+    .
+    .
+    [dL / dx (for batch K)]
+] = 
+
+[ 
+    [dL / dy (for batch 1)]
+    .
+    .
+    .
+    [dL / dy (for batch K)]
+] * W^T
+we notice now the W^T must be the same (by equating how we get each row of the LHS)
+*/
+
 struct Net {
     vector<vector<vector<ld>>> W;
     vector<vector<ld>> B,H;
@@ -136,49 +174,35 @@ struct Net {
             H.push_back(vector<ld>(layers[i]));
         }
 
-        // for(auto x : layers) {
-        //     cout << x << " ";
-        // }
-        // cout << endl;
-
-        // for(auto x : W) {
-        //     cout << x.size() << " " << x[0].size() << endl;
-        // }
-
-        // cout << "H sizes" << endl;
-        // for(auto x : H) {
-        //     cout << x.size() << endl;
-        // }
-
         dW = W, dB = B, dH = H;
 
         /* Initialize weight with Kaiming Initialization */
-        // const double gain = sqrt(2);
-        // const double std = gain / sqrt(static_cast<double>(SZ));
-
-        // mt19937_64 rng{random_device{}()};
-        // normal_distribution<double> dist(0.0, std);
-
-        // for (auto &w0 : W) {
-        //     for(auto &w1 : w0) {
-        //         for(auto &w2 : w1) {
-        //             w2 = dist(rng);
-        //         }
-        //     }
-        // }
-
-        /* Initialize the weights with Xavier/Glorot initialization */
+        const double gain = sqrt(2);
+        const double std = gain / sqrt(static_cast<double>(SZ));
 
         mt19937_64 rng{random_device{}()};
+        normal_distribution<double> dist(0.0, std);
+
         for (auto &w0 : W) {
-            ld std = sqrt((ld) 6 / (ld)(w0.size() + w0[0].size()));
-            uniform_real_distribution<ld> dist(-std, std);
             for(auto &w1 : w0) {
                 for(auto &w2 : w1) {
                     w2 = dist(rng);
                 }
-            }   
+            }
         }
+
+        /* Initialize the weights with Xavier/Glorot initialization */
+
+        // mt19937_64 rng{random_device{}()};
+        // for (auto &w0 : W) {
+        //     ld std = sqrt((ld) 6 / (ld)(w0.size() + w0[0].size()));
+        //     uniform_real_distribution<ld> dist(-std, std);
+        //     for(auto &w1 : w0) {
+        //         for(auto &w2 : w1) {
+        //             w2 = dist(rng);
+        //         }
+        //     }   
+        // }
     }
 
     void load(vector<float> x) {
@@ -434,16 +458,22 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    const int num_samples = 100;
+    const int num_train = 6000;
+    const int num_val = 1000;
     const int num_epochs = 100;
-    const int learning_rate = 0.001;
+    const double learning_rate = 0.001;
 
-    vector<int> layers = {28*28, 64, 32, 16, 10};
+    cout << "num_train: " << num_train << endl;
+    cout << "num_val: " << num_val << endl;
+    cout << "num_epochs: " << num_epochs << endl;
+    cout << "learning_rate: " << learning_rate << endl;
 
-    Dataset ds = load("../data/mnist/train-images.f32", "../data/mnist/train-labels.u8", num_samples);
+    vector<int> layers = {28*28, 32, 32, 10};
+
+    Dataset train = load("../data/mnist/train-images.f32", "../data/mnist/train-labels.u8", num_train);
 
     /* normalize */
-    for(auto &x:ds.images) {
+    for(auto &x:train.images) {
         for(auto &y: x) {
             y /= 255.0;
         }
@@ -451,15 +481,29 @@ int main() {
 
     Net nn(layers); // takes in num_layers as parameter
 
-    cout << "ds.images.size = " << ds.images.size() << " ds.labels.size = " << ds.labels.size() << endl;
-    cout << "ds.images[0].size = " << ds.images[0].size() << endl;
+    cout << "train.images.size = " << train.images.size() << endl;
 
-    nn.train(ds.images, ds.labels, num_epochs, learning_rate);
+    nn.train(train.images, train.labels, num_epochs, learning_rate);
 
     nn.debug();
 
-    for(int k = 0; k < num_samples; k++) {
-        cout << "predicted: " << nn.eval(ds.images[k], ds.labels[k]) << " true label: " << int(ds.labels[k]) << endl;
+    Dataset val = load("../data/mnist/t10k-images.f32", "../data/mnist/t10k-labels.u8", num_val);
+
+    for(auto &x:val.images) {
+        for(auto &y: x) {
+            y /= 255.0;
+        }
     }
 
+    cout << "val.images.size = " << val.images.size() << endl;
+
+    int correct = 0;
+    for(int k = 0; k < num_val; k++) {
+        int pred = nn.eval(val.images[k], val.labels[k]);
+        int label = int(val.labels[k]);
+        correct += pred == label;
+        cout << "predicted: " << pred << " true label: " << label << endl;
+    }
+
+    cout << "accuracy : " << (ld) correct / num_val * 100 << endl;
 }

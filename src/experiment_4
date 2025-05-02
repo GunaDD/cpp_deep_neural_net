@@ -1,0 +1,1140 @@
+num_train: 6000
+num_val: 1000
+num_epochs: 100
+learning_rate: 0.001
+train.images.size = 6000
+epoch : 0 loss : 1.88081
+epoch : 1 loss : 0.858219
+epoch : 2 loss : 0.621063
+epoch : 3 loss : 0.524873
+epoch : 4 loss : 0.473928
+epoch : 5 loss : 0.44836
+epoch : 6 loss : 0.43464
+epoch : 7 loss : 0.421297
+epoch : 8 loss : 0.411624
+epoch : 9 loss : 0.395643
+epoch : 10 loss : 0.386414
+epoch : 11 loss : 0.389376
+epoch : 12 loss : 0.394779
+epoch : 13 loss : 0.407999
+epoch : 14 loss : 0.416484
+epoch : 15 loss : 0.444786
+epoch : 16 loss : 0.465033
+epoch : 17 loss : 0.48734
+epoch : 18 loss : 0.512696
+epoch : 19 loss : 0.52675
+epoch : 20 loss : 0.529823
+epoch : 21 loss : 0.513963
+epoch : 22 loss : 0.491916
+epoch : 23 loss : 0.482795
+epoch : 24 loss : 0.549935
+epoch : 25 loss : 0.561666
+epoch : 26 loss : 0.567173
+epoch : 27 loss : 0.642974
+epoch : 28 loss : 0.799318
+epoch : 29 loss : 1.04493
+epoch : 30 loss : 1.1588
+epoch : 31 loss : 1.41596
+epoch : 32 loss : 1.49223
+epoch : 33 loss : 2.97527
+epoch : 34 loss : 4.99127
+epoch : 35 loss : 9.80142
+epoch : 36 loss : nan
+epoch : 37 loss : 2.30259
+epoch : 38 loss : 2.30259
+epoch : 39 loss : 2.30259
+epoch : 40 loss : 2.30259
+epoch : 41 loss : 2.30259
+epoch : 42 loss : 2.30259
+epoch : 43 loss : 2.30259
+epoch : 44 loss : 2.30259
+epoch : 45 loss : 2.30259
+epoch : 46 loss : 2.30259
+epoch : 47 loss : 2.30259
+epoch : 48 loss : 2.30259
+epoch : 49 loss : 2.30259
+epoch : 50 loss : 2.30259
+epoch : 51 loss : 2.30259
+epoch : 52 loss : 2.30259
+epoch : 53 loss : 2.30259
+epoch : 54 loss : 2.30259
+epoch : 55 loss : 2.30259
+epoch : 56 loss : 2.30259
+epoch : 57 loss : 2.30259
+epoch : 58 loss : 2.30259
+epoch : 59 loss : 2.30259
+epoch : 60 loss : 2.30259
+epoch : 61 loss : 2.30259
+epoch : 62 loss : 2.30259
+epoch : 63 loss : 2.30259
+epoch : 64 loss : 2.30259
+epoch : 65 loss : 2.30259
+epoch : 66 loss : 2.30259
+epoch : 67 loss : 2.30259
+epoch : 68 loss : 2.30259
+epoch : 69 loss : 2.30259
+epoch : 70 loss : 2.30259
+epoch : 71 loss : 2.30259
+epoch : 72 loss : 2.30259
+epoch : 73 loss : 2.30259
+epoch : 74 loss : 2.30259
+epoch : 75 loss : 2.30259
+epoch : 76 loss : 2.30259
+epoch : 77 loss : 2.30259
+epoch : 78 loss : 2.30259
+epoch : 79 loss : 2.30259
+epoch : 80 loss : 2.30259
+epoch : 81 loss : 2.30259
+epoch : 82 loss : 2.30259
+epoch : 83 loss : 2.30259
+epoch : 84 loss : 2.30259
+epoch : 85 loss : 2.30259
+epoch : 86 loss : 2.30259
+epoch : 87 loss : 2.30259
+epoch : 88 loss : 2.30259
+epoch : 89 loss : 2.30259
+epoch : 90 loss : 2.30259
+epoch : 91 loss : 2.30259
+epoch : 92 loss : 2.30259
+epoch : 93 loss : 2.30259
+epoch : 94 loss : 2.30259
+epoch : 95 loss : 2.30259
+epoch : 96 loss : 2.30259
+epoch : 97 loss : 2.30259
+epoch : 98 loss : 2.30259
+epoch : 99 loss : 2.30259
+-0.5105243127 nan 0.3767403377 nan -0.4710957290 0.1233810050 -0.0988539675 nan nan -1.2039298702 -0.1875844117 -0.1890665368 nan nan -0.6330422011 -0.1163352322 nan nan nan nan nan -0.1320534510 nan nan nan nan nan nan nan 0.1504814175 nan nan 
+-776496471384023964963171450096665148127870119086993419646621553550089404586964767481997544249305114372158352495669805812708557199944184246781660364800.0000000000 nan -12622682803990.9531250000 nan -3407379373536929302061948567270732476813668728634496539651217355420785141493868726295200937216378417923347784846624772516216832.0000000000 1513880278855978474228745005158313040185875483645282599789713290054227928177642045440.0000000000 2.1465795467 nan nan -107348027996511172569653260507384987197219879976226406853370899297406175524379688960.0000000000 0.0180359775 0.2508859576 nan nan -1699826.6733833270 -3.6734311765 nan nan nan nan nan 0.2906502498 nan nan nan nan nan nan nan -0.1049700173 nan nan 
+-851.0333295974 nan -2.6200066656 nan 31790269.0531249121 707229389.3176777363 -3.2759063495 nan nan -29974390.5380870663 0.2756257733 -0.0267647907 nan nan -1498809685253.3054199219 -2924763.0948884133 nan nan nan nan nan -0.4682543875 nan nan nan nan nan nan nan 0.1272049638 nan nan 
+-125053692378.0352630615 nan 0.6906832750 nan 1449.3171054669 32254.0678019291 -63.9937452066 nan nan -1366.5222329535 0.1816659804 -0.2678226624 nan nan -68356250.6154820621 -136.2155312083 nan nan nan nan nan -0.0261295021 nan nan nan nan nan nan nan -0.2864283258 nan nan 
+-936386123241872295925260995083352390019285988223842734079986782891613811234758702955315233749995290274495515337001271296.0000000000 nan 5.0014068377 nan -4108998404479046446885364079158130798682105729410820997500803399384140793097354925345741425606656.0000000000 1825605830305438330065087081571853927359258916674338816.0000000000 -5.8700804277 nan nan -129452235106938811907460291903484378988789889092288512.0000000000 -0.2789744800 -0.1400548007 nan nan -283756.5786295469 -8.7072791622 nan nan nan nan nan 0.2105191479 nan nan nan nan nan nan nan -2.2272760241 nan nan 
+-568164987640902084235040010360204776518137343766834280889119830549646097031154043119369583926968320.0000000000 nan -39120957950920298397040178626560.0000000000 nan -2493190543677344348415980032634239357978824870027424166241579672066855010304.0000000000 -44982742128010202160947809022355895972997655166976.0000000000 -3.4184650926 nan nan -168162273802457011101060396464029245214998172532736.0000000000 0.0074291996 0.2822318635 nan nan -3.7190507650 -2.9904909577 nan nan nan nan nan -1.4219292046 nan nan nan nan nan nan nan 0.2955970869 nan nan 
+-2496830505227554918033502267788732526902782453478668901426757304483644964864.0000000000 nan -2178351219290.5837402344 nan -10956455149842683781223303786410469550018636351012864.0000000000 -174605293827705957586567168.0000000000 -16.0096785358 nan nan -652739736151606809547767808.0000000000 -0.1749522725 -0.0170566734 nan nan -57488.0611649878 -5.9361716247 nan nan nan nan nan -0.8510489519 nan nan nan nan nan nan nan -0.9529834399 nan nan 
+-333200088577181815570544082180291457513265192729960503614856865000944828416.0000000000 nan -290699275410.6018676758 nan -1462130416452432021019529981362675291956443757936640.0000000000 -23300940625676864191463424.0000000000 -2.2781099622 nan nan -87107609985162852400365568.0000000000 0.0119670919 0.1166046585 nan nan -7003.4064105704 -2.2737483132 nan nan nan nan nan 0.2878228575 nan nan nan nan nan nan nan -0.5522493632 nan nan 
+-4720142510687386767175937247887200307084162966802071391315911023497090529333652905206480896.0000000000 nan -285789820145052938141696.0000000000 nan -20712671369136012679479711923337671791025046587182219182532791894016.0000000000 9202528180949566047125504.0000000000 -0.7588508632 nan nan -652543841547220093501440.0000000000 0.1209573495 0.2401152129 nan nan -0.3570757923 -0.8129313820 nan nan nan nan nan -0.0193743392 nan nan nan nan nan nan nan 0.1639456852 nan nan 
+0.3753010043 nan -0.0386504192 nan 0.1295930541 -0.0423918903 0.0624297495 nan nan 0.0979681819 -0.2430065578 -0.0546268002 nan nan -0.0741030312 -0.1708998300 nan nan nan nan nan 0.1457154922 nan nan nan nan nan nan nan 0.1702091994 nan nan 
+-47788291013915252668274447570967565573094311966491810580892095164451936282203998730492576195876557462308634133336739433519513600.0000000000 nan -3056814129149629914559167844963057664.0000000000 nan -209701966587385033381215754347647194405650951227736982700552879032093183806552061420847561677306572308480.0000000000 93169452782248846629509473174607799457877613270865094343917568.0000000000 -45.0001301067 nan nan -6606570655142250317164430332610526528499684104941815969349632.0000000000 0.0459366231 0.0164640720 nan nan -31022782837158.0468750000 -60537554.0505853519 nan nan nan nan nan -0.2433866081 nan nan nan nan nan nan nan -40.9475142159 nan nan 
+-457612138715158810571297911048312289012255371035417272383922824128147409674719030760597202255153315036929930422173591985057904824564306740918676155850498294428085182791680.0000000000 nan -573062782590992113143994384384.0000000000 nan -2008068574682557377816390919495716686748057230618848592840203303957449862099496816329679820521767192894562555770715420671042185999687607566953611264.0000000000 892174037740564636811608257009620781421620353318348398190621818482079984427599864744099765684351065391104.0000000000 -660.0662701751 nan nan -63263340515611420199037280985352657438712461949402223375150660304586324903696093559639379597619451920384.0000000000 0.0668361447 0.2011302569 nan nan -0.7072925023 -24.6902157532 nan nan nan nan nan -0.1797742460 nan nan nan nan nan nan nan 0.0223018363 nan nan 
+-2227406.8080236255 nan 2.4680629670 nan 1.3242275753 -1.3508749710 -2.4021673748 nan nan -2.8832329873 -0.1008993397 0.0064777646 nan nan -1416.7554047638 0.0068415793 nan nan nan nan nan 0.7231025260 nan nan nan nan nan nan nan -0.1111350128 nan nan 
+-861432683864682108080605940126865676141996244434161918015188137472996432014980042467514435764224.0000000000 nan -52157046367127148392922218496.0000000000 nan -3780091818652232633953327606330445204308100627710663268196754820318625792.0000000000 -1236244172272627740913404011620597760.0000000000 10.0186640715 nan nan -4621548374575164171653975849660579840.0000000000 0.1896175928 -0.2284657760 nan nan -374987.5056065417 -5.7627437301 nan nan nan nan nan -3.0736969682 nan nan nan nan nan nan nan -1.1167324324 nan nan 
+-666208452015465343766136297275549539256275489309145568006849219855908864.0000000000 nan -661934077.1620255709 nan -2923419515129773666480897022074517266412886556672.0000000000 -50135181704097865662464.0000000000 -5181.1698990505 nan nan -187424015389463203020800.0000000000 0.1682374303 0.0903932661 nan nan -5492280798.5551033020 -10911.7705456248 nan nan nan nan nan 0.0758774159 nan nan nan nan nan nan nan 0.1201818497 nan nan 
+-10915117.1877532136 nan -155.1608555316 nan 2.8005220443 -2.0717272241 -1.8226904163 nan nan -4.6273836025 -0.1824392601 0.1646003487 nan nan -3387.5280884197 -0.9682558654 nan nan nan nan nan 1.0687999075 nan nan nan nan nan nan nan -0.4366211233 nan nan 
+-106871469805958654974828477532084353335775250188452033672885078596850493869492229978574387776979117242831520230840247255040.0000000000 nan -7227254683785791957349991186432.0000000000 nan -468967542360283842568358126957753827980546704763635386874520760723919901067068549619327358331781120.0000000000 208359749817301914349261994197514717516956711626504929280.0000000000 -90.0721918070 nan nan -14774621592690454726018445601353977512377959998306648064.0000000000 0.2075565312 0.2553119865 nan nan -95395776.7617292106 -189.5062842162 nan nan nan nan nan 0.2596043146 nan nan nan nan nan nan nan 0.0917101774 nan nan 
+-0.0964688455 nan 0.6097499279 nan 0.2468527753 0.0601495847 -0.5734899884 nan nan -0.6848084968 -0.1443307630 0.0394824022 nan nan -0.3380770476 -0.2832253371 nan nan nan nan nan -0.2027950095 nan nan nan nan nan nan nan -0.2338200371 nan nan 
+-2301572775341687818762839514623895568439464997459042536635348094429354262528.0000000000 nan -2007996219764.9775390625 nan -10099635852066749866821839842855645650674959322710016.0000000000 -160950379129525297605509120.0000000000 -4.2316299663 nan nan -601692570158700074691985408.0000000000 0.0573365408 0.0844849220 nan nan 1.7329700715 -1.9751787961 nan nan nan nan nan -1.3858595881 nan nan nan nan nan nan nan 0.2038759872 nan nan 
+-6465266299677405513341554058741794952980025746273609741468623640125479504732480379029426182029312.0000000000 nan -439431238129167676621788807168.0000000000 nan -28370528194002900150430972837542007276851522936373850167442175474291179520.0000000000 -457223699718384361623561282524789496230359072768.0000000000 483.7377982534 nan nan -1709272786488004477186190495257693671218057576448.0000000000 0.1940650646 0.1981948380 nan nan -242030993.1347451806 -450.9902173907 nan nan nan nan nan -1.3222520478 nan nan nan nan nan nan nan -6.8020223168 nan nan 
+-892866994792661595298028466537848446065159695185551774578100190723611035280964092236714841716293632.0000000000 nan -54060295272358369711897121390592.0000000000 nan -3918030143711756443660447635247249033469411133187482757968203035936987021312.0000000000 1740759661983731794779676426108928.0000000000 -672.9648358298 nan nan -123435861831188022320644191420416.0000000000 0.2028891232 -0.1277747950 nan nan -713567819.4909095764 -1417.7390565371 nan nan nan nan nan 0.0216318307 nan nan nan nan nan nan nan 0.2689515405 nan nan 
+-317157177847229.5000000000 nan -35905807997530177536.0000000000 nan -1.8016026000 -3773183601548101197794120281620480.0000000000 -0.7114286116 nan nan -14105568133325798785686342945734656.0000000000 -0.0278474376 -0.0693473388 nan nan -50050.6681058073 0.4817221747 nan nan nan nan nan 2.0265074833 nan nan nan nan nan nan nan -0.5918910375 nan nan 
+-61614473172761007657892644265884099175547424168272449327960142254420904596985485090034452173314166506763339215631467205966730671376175730897517883162624.0000000000 nan -392459369724238.8750000000 nan -270373263417420630528708188001327291477331565292254283821305753050161017973575553390898047421920834650662277601105346520774868992.0000000000 120125382749115707502277217581744605523155974407863680474685049524954007791480522932224.0000000000 -0.2938722639 nan nan -8517993880063262604941079279943340775465581859860964657720851397340764454402132017152.0000000000 0.0765281635 -0.1401780836 nan nan 0.0853644297 0.1642671397 nan nan nan nan nan 0.1126168978 nan nan nan nan nan nan nan 0.2185708970 nan nan 
+-183369572496659195499275759901458908638542159876604070501622091570646028403650167084285109911407317500574373678940586645835524082956205324134440432041984.0000000000 nan -2273661274443290.5000000000 nan -804652335310349773188540621174756548371342456235205995680225832043864504460622619835818453573959205140349077287496900592418160640.0000000000 357502692897176573549517028254128094600867050248703690851729586904766308257692886499328.0000000000 -0.3465783633 nan nan -25350227241849964812765424770230240718419330323201420490509593434750291021857745272832.0000000000 -0.2722085445 -0.2274503447 nan nan -0.1422443599 0.0740315778 nan nan nan nan nan -0.1921259466 nan nan nan nan nan nan nan -0.1738465559 nan nan 
+-23832841254101503383024479904577789362178545833470055420819390156396884313828792263600673555960487171858502476637349937211855016135037807667214605188638468033286562440930131968.0000000000 nan -29845557565238150497499834071646208.0000000000 nan -104581971322112405704135846848725744784286088610855257372478980685571180070819698242244649023979594364663664200677982404756461730529833909116704263241728.0000000000 46465205822996847038322493418019267271485272934015228871585067735512096746769782344895866823482018470096273408.0000000000 -16.1559002903 nan nan -3294810220607440023534737670655131234245904938215095315801694799017076084241680155278027435803888181747646464.0000000000 0.1218754436 -0.0019013828 nan nan -106698.3769638046 -7.5861258122 nan nan nan nan nan 0.7102644739 nan nan nan nan nan nan nan 0.0442364987 nan nan 
+-26299897178098029562406119997067166292568587969579307173335445578944720618049213946177141819808282507799120440968871936.0000000000 nan -1332648965920775995392.0000000000 nan -115407771282033260902999431096679544743028958227696886360963044246690551675001262060839798571008.0000000000 51275050359078526510367190525251573215508384786153472.0000000000 0.1692059750 nan nan -3635872412333951273155533844659631991422100296433664.0000000000 0.0030465098 -0.2238535188 nan nan 0.2501063023 0.1512382583 nan nan nan nan nan 0.0633529145 nan nan nan nan nan nan nan -0.0112385292 nan nan 
+-1664173484558048181158735538715582335156560805714897708572508052899143407023421861146918912.0000000000 nan -100760483346673806868480.0000000000 nan -7302635123586779487316839231591793934785564507346602969935772647424.0000000000 -65924213157132281179197669376.0000000000 0.0721118019 nan nan -246461665380579244588455165952.0000000000 -0.2760774925 0.1105763049 nan nan 0.3411264178 0.0278647176 nan nan nan nan nan 0.1886097356 nan nan nan nan nan nan nan 0.0949873902 nan nan 
+-447397804749523367508313421442844030600356649886549244025335560179509128369936295702560768.0000000000 nan -27088533421020082601984.0000000000 nan -1963246592675492640672839603357051052381425060736829133566691508224.0000000000 -151566144391659120933986107392.0000000000 -0.1358801948 nan nan -566614121995555904957601284096.0000000000 0.2031635081 -0.0547221730 nan nan -0.1152799331 0.2889976060 nan nan nan nan nan -0.0809550041 nan nan nan nan nan nan nan -0.2130476281 nan nan 
+-18376558402930927216778463009933761440152617660644187193265298176401257132596396032.0000000000 nan -1249017973467826.7500000000 nan -80639009147249885140528103393622396522604233613742926987264.0000000000 -1299590400707590226597463982080000.0000000000 2.2129567233 nan nan -4858353814289840360313594354597888.0000000000 0.1871794527 0.2896400624 nan nan 9.3082168909 -3.7822363986 nan nan nan nan nan -0.9291970354 nan nan nan nan nan nan nan 0.1804249907 nan nan 
+-5698317925070596135236544570232881789806707201790753016532335720591591595618550367199055314944.0000000000 nan -346441979883666151177191424.0000000000 nan -25005047256858380555084211910211670909727184551611626198554295008231424.0000000000 -13595856242729718024625627134642115756163072.0000000000 -1.2168258412 nan nan -50826383450845776615054554132012058363822080.0000000000 -0.3036309992 -0.3039958326 nan nan -6465.5829099229 -3.2785579596 nan nan nan nan nan -0.1347863503 nan nan nan nan nan nan nan -1.3319307544 nan nan 
+-32.1307610298 nan 2.7023031616 nan -2.5370972516 -7.3187655384 -4.6969028435 nan nan -6.6564067942 -0.0839824691 0.0590081229 nan nan -2.5550654713 -3.4469376876 nan nan nan nan nan 0.1738603302 nan nan nan nan nan nan nan -0.4049603184 nan nan 
+-101684106706655.5625000000 nan -0.2565260220 nan 1178994.9068681318 26228755.5351236537 -52435.5641145172 nan nan -1111649.5836608249 0.0772201108 -0.2298695429 nan nan -55585821339.6214675903 -110432.2564153585 nan nan nan nan nan -0.1201343080 nan nan nan nan nan nan nan -0.2223570050 nan nan 
+
+val.images.size = 1000
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 9
+predicted: 0 true label: 0
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 5
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 4
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 7
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 6
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 0
+predicted: 0 true label: 5
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 1
+predicted: 0 true label: 6
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 0
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 9
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 6
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 8
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 6
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 5
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 6
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 6
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 5
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 5
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 9
+predicted: 0 true label: 0
+predicted: 0 true label: 9
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 9
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 8
+predicted: 0 true label: 6
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 5
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 8
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 3
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 0
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 5
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 5
+predicted: 0 true label: 0
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 6
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 5
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+predicted: 0 true label: 4
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 5
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 7
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 9
+predicted: 0 true label: 6
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 8
+predicted: 0 true label: 0
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 0
+predicted: 0 true label: 7
+predicted: 0 true label: 7
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 5
+predicted: 0 true label: 5
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 6
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 3
+predicted: 0 true label: 5
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 2
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 3
+predicted: 0 true label: 0
+predicted: 0 true label: 0
+predicted: 0 true label: 5
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 6
+predicted: 0 true label: 0
+predicted: 0 true label: 2
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 8
+predicted: 0 true label: 8
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 5
+predicted: 0 true label: 5
+predicted: 0 true label: 8
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 6
+predicted: 0 true label: 6
+predicted: 0 true label: 3
+predicted: 0 true label: 2
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 7
+predicted: 0 true label: 5
+predicted: 0 true label: 6
+predicted: 0 true label: 4
+predicted: 0 true label: 9
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 3
+predicted: 0 true label: 3
+predicted: 0 true label: 4
+predicted: 0 true label: 7
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 1
+predicted: 0 true label: 6
+predicted: 0 true label: 9
+predicted: 0 true label: 1
+predicted: 0 true label: 4
+predicted: 0 true label: 4
+predicted: 0 true label: 5
+predicted: 0 true label: 4
+predicted: 0 true label: 0
+predicted: 0 true label: 6
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 1
+predicted: 0 true label: 5
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 3
+predicted: 0 true label: 8
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 6
+predicted: 0 true label: 7
+predicted: 0 true label: 1
+predicted: 0 true label: 6
+predicted: 0 true label: 2
+predicted: 0 true label: 3
+predicted: 0 true label: 9
+predicted: 0 true label: 0
+predicted: 0 true label: 1
+predicted: 0 true label: 2
+predicted: 0 true label: 2
+predicted: 0 true label: 0
+predicted: 0 true label: 8
+predicted: 0 true label: 9
+accuracy : 8.5000000000
