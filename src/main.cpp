@@ -121,7 +121,8 @@ struct Net {
     /* We stack the bias on the weight and add another column to x = [x_1 ... x_m 1] */
     vector<vector<vector<ld>>> W, H;
     vector<vector<vector<ld>>> dW, dH, momentum;
- 
+    
+    string experiment_name;
     int num_layers, batch_size; // num of hidden layer + 1 (includes the output layer)
     vector<int> layers;
 
@@ -177,10 +178,11 @@ struct Net {
         }
     }
 
-    Net(vector<int> layers, int K) { /* vector representing number of hidden unit in each layer, K = batch size */
+    Net(vector<int> layers, int K, string experiment_name) { /* vector representing number of hidden unit in each layer, K = batch size */
         this->num_layers = layers.size();
         this->batch_size = K; 
         this->layers = layers;
+        this->experiment_name = experiment_name;
         train_init();
     }
 
@@ -379,7 +381,7 @@ struct Net {
             }
 
             assert(dY.size() == batch_size);
-            assert(dY[0].size() == layers[l+1]);\
+            assert(dY[0].size() == layers[l+1]);
 
             dX = matmul(dY, totdYdX);
         }
@@ -428,6 +430,17 @@ struct Net {
         }
     }
 
+    void print_log(int epoch_num, ld loss) {
+        namespace fs = std::filesystem;
+
+        string path = "../logs/";
+        path += experiment_name;
+
+        ofstream out(path, ios::out | ios::trunc);
+
+        out << "epoch: " << epoch_num << " loss : " << loss << "\n";
+    }
+
     void train(vector<vector<float>> x, vector<uint8_t> y, int num_epochs, ld learning_rate) {
         assert(x.size() == y.size());
         assert(x[0].size() == 28*28);
@@ -462,7 +475,16 @@ struct Net {
             }
 
             total_loss /= x.size();
-            cout << "epoch : " << n << " loss : " << total_loss << endl; 
+            print_log(n, total_loss);
+            
+            if((n+1) % 10 == 0) {
+                string path = "../weights/";
+                path += experiment_name;
+                path += "/";
+                path += "epoch";
+                path += to_string(n+1);
+                save_model(path);
+            }
  
             /* stop early when loss is already small enough to prevent precision issue occuring */
             if (total_loss < 1e-6) {
@@ -483,14 +505,33 @@ struct Net {
         return argmax;
     }
 
-    void debug() {
-        for(int i = 0; i < H[1].size(); i++) {
-            for(int j = 0; j < H[2].size(); j++) {
-                cout << fixed << setprecision(10) << W[1][i][j] << " ";
+    /* print out model weights */
+    void save_model(const string &path) {
+        namespace fs = std::filesystem;
+
+        fs::path p(path);
+        fs::path dir = p.parent_path();
+        
+        if (!dir.empty() && !fs::exists(dir)) {
+            if (!fs::create_directories(dir)) {
+                std::cerr << "Error: could not create directory " << dir << "\n";
+                return;
             }
-            cout << endl;
         }
-        cout << endl;
+
+        ofstream out(path, ios::out | ios::trunc);
+
+        for(int l = 0; l < num_layers; l++) {
+            for(int i = 0; i < layers[l]; i++) {
+                for(int k = 0; k < layers[l+1]; k++) {
+                    out << W[l][i][k] << " ";
+                }
+                out << '\n';
+            }
+            out << '\n';
+        }
+
+        out.close();
     }
 };
 
@@ -525,18 +566,32 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    const int num_train = 10000;
+    const string experiment_name = "debug";
+    const int num_train = 100;
     const int num_val = 10000;
-    const int num_epochs = 100;
+    const int num_epochs = 10;
     const int batch_size = 10; /* ensure batch_size divides num_train */
     const double learning_rate = 0.0001;
 
-    cout << "num_train: " << num_train << endl;
-    cout << "num_val: " << num_val << endl;
-    cout << "num_epochs: " << num_epochs << endl;
-    cout << "learning_rate: " << learning_rate << endl;
+    namespace fs = std::filesystem;
+
+    string path = "../params/";
+    path += experiment_name;
+
+    ofstream out(path, ios::out | ios::trunc);
+
+    out << "num_train: " << num_train << endl;
+    out << "num_val: " << num_val << endl;
+    out << "num_epochs: " << num_epochs << endl;
+    out << "learning_rate: " << learning_rate << endl;
 
     vector<int> layers = {28*28, 32, 32, 10};
+
+    out << "layers" << endl;
+    for(auto l: layers) {
+        out << l << " ";
+    }
+    out << endl;
 
     Dataset train = load("../data/mnist/train-images.f32", "../data/mnist/train-labels.u8", num_train);
 
@@ -547,9 +602,9 @@ int main() {
         }
     }
 
-    Net nn(layers, batch_size); // takes in num_layers as parameter
+    Net nn(layers, batch_size, experiment_name); // takes in num_layers as parameter
 
-    cout << "train.images.size = " << train.images.size() << endl;
+    out << "train.images.size = " << train.images.size() << endl;
 
     nn.train(train.images, train.labels, num_epochs, learning_rate);
 
@@ -561,15 +616,14 @@ int main() {
         }
     }
 
-    cout << "val.images.size = " << val.images.size() << endl;
+    out << "val.images.size = " << val.images.size() << endl;
 
     int correct = 0;
     for(int k = 0; k < num_val; k++) {
         int pred = nn.eval(val.images[k], val.labels[k]);
         int label = int(val.labels[k]);
         correct += pred == label;
-        // cout << "predicted: " << pred << " true label: " << label << endl;
     }
 
-    cout << "accuracy : " << (ld) correct / num_val * 100 << endl;
+    out << "accuracy : " << (ld) correct / num_val * 100 << endl;
 }
