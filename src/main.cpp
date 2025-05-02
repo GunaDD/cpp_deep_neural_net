@@ -115,66 +115,28 @@ so dL/dx = dL/dy W^T
 
 */
 
-/*
-
-Summary:
-For batch size = 1
-* dL / dW = matmul(x^T, dL/dy)
-* dL / db = dL / dy
-* dL / dx = matmul(dL/dy, W^T)
-
-Extending to batch size > 1
-* dL / dW : the loss is the sum over all elements in the batch
-dL / dW = matmul(x_1^T, dL / dy) + ... + matmul(x_k^T, dL / dy)
-        = matmul(X^T, dL / dy)
-        the dL / dy here differ in that we stack each dL / dy for each item in the batch
-        so dimension of dL / dy is B x N
-
-* dL / db = [ \sum dL/dy_1, ...., \sum dL / dy_N] where \sum run over all batchs
-
-* dL / dX =  matmul(dL / dY, W^T) 
-to see this 
-we notice that dL / dX is equal to
-[   [dL / dx (for batch 1)]
-    [dL / dx (for batch 2)]
-    .
-    .
-    .
-    [dL / dx (for batch K)]
-] = 
-
-[ 
-    [dL / dy (for batch 1)]
-    .
-    .
-    .
-    [dL / dy (for batch K)]
-] * W^T
-we notice now the W^T must be the same (by equating how we get each row of the LHS)
-*/
 
 struct Net {
-    vector<vector<vector<ld>>> W;
-    vector<vector<ld>> B,H;
-    vector<vector<vector<ld>>> dW;
-    vector<vector<ld>> dB, dH;
+    /* We stack the bias on the weight and add another column to x = [x_1 ... x_m 1] */
+    vector<vector<vector<ld>>> W, H;
+    vector<vector<vector<ld>>> dW, dH;
  
-    int num_layers; // num of hidden layer + 1 (includes the output layer)
+    int num_layers, batch_size; // num of hidden layer + 1 (includes the output layer)
+    vector<int> layers;
 
-    Net(vector<int> layers) { /* vector representing number of hidden unit in each layer */
-        this->num_layers = layers.size();
-
+    void train_init() {
         /* size of H is 1 more than size of W and B */
-        W = {}, B = {}, H = {};
+        W = {};
+        H = {};
         for(int i = 0; i < layers.size();i++) {
             if(i + 1 < layers.size()) {
-                W.push_back(vector<vector<ld>>(layers[i], vector<ld>(layers[i+1])));
-                B.push_back(vector<ld>(layers[i+1]));
+                /* +1 comes for the bias */
+                W.push_back(vector<vector<ld>>(layers[i] + 1, vector<ld>(layers[i+1]))); 
+                dW.push_back(vector<vector<ld>>(layers[i] + 1, vector<ld>(layers[i+1])));
             }
-            H.push_back(vector<ld>(layers[i]));
+            H.push_back(vector<vector<ld>>(batch_size));
+            dH.push_back(vector<vector<ld>>(batch_size, vector<ld>(layers[i])));
         }
-
-        dW = W, dB = B, dH = H;
 
         /* Initialize weight with Kaiming Initialization */
         const double gain = sqrt(2);
@@ -205,27 +167,84 @@ struct Net {
         // }
     }
 
-    void load(vector<float> x) {
-        assert(H[0].size() == x.size());
+    void eval_init() {
+        W = {}, H = {};
+        for(int i = 0; i < layers.size();i++) {
+            if(i + 1 < layers.size()) {
+                /* +1 comes for the bias */
+                W.push_back(vector<vector<ld>>(layers[i] + 1, vector<ld>(layers[i+1]))); 
+            }
+            H.push_back(vector<vector<ld>>(1)); /* batch_size = 1*/
+        }
+    }
 
-        for(int i = 0; i < x.size(); i++) {
-            H[0][i] = x[i];
+    Net(vector<int> layers, int K) { /* vector representing number of hidden unit in each layer, K = batch size */
+        this->num_layers = layers.size();
+        this->batch_size = K; 
+        this->layers = layers;
+        train_init();
+    }
+
+    void load(vector<vector<float>> X) {
+        assert(X.size() == batch_size);
+        assert(X[0].size() == 28*28);
+
+        for(int i = 0; i < X.size(); i++) {
+            assert(H[0][i].empty());
+            for(int j = 0; j < X[i].size(); j++) {
+                H[0][i].push_back(X[i][j]);
+            }
+        }
+    }
+
+    vector<vector<ld>> matmul(vector<vector<ld>> A, vector<vector<ld>> B) {
+        assert(A.size() > 0 && A[0].size() == B.size());
+        int n = A.size();
+        int r = A[0].size();
+        int m = B[0].size();
+        vector<vector<ld>> res = vector<vector<ld>>(n, vector<ld>(m));
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                for(int k = 0; k < r; k++) {
+                    res[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+        return res;
+    }
+
+    vector<vector<ld>> transpose(vector<vector<ld>> A) {
+        int n = A.size();
+        int m = A[0].size();
+        vector<vector<ld>> res(m, vector<ld>(n));
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                res[i][j] = A[j][i];
+            }   
+        }
+        return res;
+    }
+
+    void ReLU(vector<vector<ld>> &A) {
+        for(auto &x:A) {
+            for(auto &y:x) {
+                y = max(y, (ld)0);
+            }
         }
     }
 
     void forward() {
-        for(int l = 0; l + 1 < num_layers; l++) {  
-            assert(W[l].size() == H[l].size());
-            assert(W[l].size() > 0);
-            assert(W[l][0].size() == H[l+1].size());
-
-            for(int i = 0; i < H[l+1].size(); i++) {
-                for(int k = 0; k < H[l].size(); k++) {
-                    H[l+1][i] += H[l][k] * W[l][k][i]; 
-                }
-                H[l+1][i] += B[l][i];
-                H[l+1][i] = max((ld)0, H[l+1][i]); // relu 
+        for(int l = 0; l + 1 < num_layers; l++) {
+            auto X = H[l];
+            for(int b = 0; b < batch_size; b++) {
+                X[b].push_back((ld)1);
             }
+            if(W[l].size() != X[0].size()) {
+                cout << "layer " << l << " " << W[l].size() << " " << X[0].size() << endl;
+            }
+            assert(W[l].size() == X[0].size());
+            H[l+1] = matmul(X, W[l]); 
+            ReLU(H[l+1]);
         }
     }
 
@@ -249,76 +268,129 @@ struct Net {
         return res;
     }   
 
-    /* multiclass cross-entropy loss */
-    ld cost(uint8_t label) {
-        vector<ld> applied_softmax = softmax(H[num_layers - 1]);
-        /* take the max to prevent taking log(0) */
-        return -log(max(applied_softmax[label], eps));
+    /* multiclass cross-entropy loss, takes in a set of labels */
+    ld cost(vector<uint8_t> y) {
+        assert(y.size() == batch_size);
+        ld sum = 0;
+        for(int j = 0; j < batch_size; j++) {
+            auto z = H[num_layers - 1][j];
+            vector<ld> applied_softmax = softmax(z);
+            sum += -log(max(applied_softmax[y[j]], eps)); /* take the max with epsilon to prevent log(0) */
+        }
+        return sum / static_cast<ld>(batch_size);
     }
 
-    void backward(uint8_t y) {
+    /*
+    Summary:
+    For batch size = 1
+    * dL / dW = matmul(x^T, dL/dy)
+    * dL / db = dL / dy
+    * dL / dx = matmul(dL/dy, W^T)
+
+    Extending to batch size > 1
+    * dL / dW : the loss is the sum over all elements in the batch
+    dL / dW = matmul(x_1^T, dL / dy) + ... + matmul(x_k^T, dL / dy)
+            = matmul(X^T, dL / dY)
+
+            the dL / dY = stack each dL / dy for each item in the batch
+            dL / dY \in R^{B x N}
+
+    * dL / db = [ \sum dL/dy_1, ...., \sum dL / dy_N] where \sum run over all batchs
+
+    * dL / dX = matmul(dL / dY, W^T) 
+    to see this 
+    we notice that dL / dX is equal to
+    [   [dL / dx (for batch 1)]
+        [dL / dx (for batch 2)]
+        .
+        .
+        .
+        [dL / dx (for batch K)]
+    ] = 
+
+    [ 
+        [dL / dy (for batch 1)]
+        .
+        .
+        .
+        [dL / dy (for batch K)]
+    ] * W^T
+    we notice now the W^T must be the same (by equating how we get each row of the LHS)
+    */
+
+    void backward(vector<uint8_t> y) {
         // initalizing the first dL/dy
+        assert(y.size() == batch_size);
 
-        assert(dH[num_layers - 1].size() == 10);
+        for(int b = 0; b < batch_size; b++) {
+            assert(dH[num_layers - 1][b].size() == 10);
+            ld m = *max_element(H[num_layers - 1][b].begin(), H[num_layers - 1][b].end());
+            ld sum_exp = 0;
+            for(int i = 0; i < 10; i++) {
+                sum_exp += exp(H[num_layers - 1][b][i] - m);
+            }
 
-        ld m = *max_element(H[num_layers - 1].begin(), H[num_layers - 1].end());
-        ld sum_exp = 0;
-        for(int i = 0; i < 10; i++) {
-            sum_exp += exp(H[num_layers - 1][i] - m);
+            for(int i = 0; i < 10; i++) {
+                ld p = exp(H[num_layers - 1][b][i] - m) / sum_exp;
+                dH[num_layers - 1][b][i] = p - (i == y[b] ? 1.0 : 0.0);
+            }
         }
 
-        for(int i = 0; i < 10; i++) {
-            ld p = exp(H[num_layers - 1][i] - m) / sum_exp;
-            dH[num_layers - 1][i] = p - (i == y ? 1.0 : 0.0);
-        }
-        
         for(int l = num_layers - 2; l >= 0; l--) {  
             /* y = H[l+1], x = H[l], W = W[l], b = B[l]
             dL/dy = bH[l+1], dL/dx = bH[l] */
 
-            for(int i = 0; i < H[l].size(); i++) { // iterate over X's
-                // update dL/dW
-                for(int k = 0; k < H[l+1].size(); k++) { // iterate over Y's
-                    dW[l][i][k] = dH[l+1][k] * H[l][i];
-                }      
-            }
+            auto X = H[l], Y = H[l+1]; // for readability
 
-            for(int k = 0; k < H[l+1].size(); k++) {
-                // update dL/db = dL/dy
-                dB[l][k] = dH[l+1][k];
-            }
+            #define dX dH[l]
+            #define dY dH[l+1]
 
-            // dL/dx = dL/dy * W^T
-            // dimensions: 1 x M = (1 x N) * (N x M)
-            // y = xW + b
-            // clean this up later with matmul and transpose functions
+            dW[l] = matmul(transpose(X), dY);
+            assert(dW[l].size() == layers[l]);
 
             /*
             Also note how the activation function (relu) affects the gradient
             particularly if xW + b < 0, then dL/dx = 0
             */
 
-            for(int i = 0; i < H[l].size(); i++) { // iterate over X's
-                if (H[l+1][i] <= 0) { // due to the ReLU
-                    dH[l][i] = 0; 
-                } else {
-                    for(int k = 0; k < H[l+1].size(); k++) {
-                        dH[l][i] += dH[l+1][k] * W[l][i][k]; // recall W[i,k] = W^T[k, i]
+            vector<vector<ld>> totdYdX = vector<vector<ld>>(layers[l+1], vector<ld>(layers[l]));
+            for(int b = 0; b < batch_size; b++) {
+                /* we process each batch separately to not create confusion
+                create dY/dX for ReLU functions */
+
+                vector<vector<ld>> dYdX = transpose(W[l]);
+                for(int i = 0; i < layers[l+1]; i++) {
+                    dYdX[i].pop_back();
+                }
+                assert(dYdX.size() == layers[l+1]);
+                assert(dYdX[0].size() == layers[l]);
+                for(int i = 0; i < Y[b].size(); i++) {
+                    if(Y[b][i] <= 0) {
+                        for(int j = 0; j < X[b].size(); j++) {
+                            dYdX[i][j] = 0; 
+                        }
+                    }
+                }
+                
+                for(int i = 0; i < layers[l+1]; i++) {
+                    for(int j = 0; j < layers[l]; j++) {
+                        totdYdX[i][j] += dYdX[i][j];
                     }
                 }
             }
 
+            assert(dY.size() == batch_size);
+            assert(dY[0].size() == layers[l+1]);\
+
+            dX = matmul(dY, totdYdX);
         }
     }
 
     void step(ld learning_rate) {
         // update weights & biases
         for(int l = 0; l + 1 < num_layers; l++) {
-            for(int i = 0; i < H[l + 1].size(); i++) {
-                B[l][i] -= learning_rate * dB[l][i];
-            }
-            for(int i = 0; i < H[l].size(); i++) {
-                for(int k = 0; k < H[l+1].size(); k++) {
+            for(int i = 0; i < layers[l]; i++) {
+                for(int k = 0; k < layers[l+1]; k++) {
                     W[l][i][k] -= learning_rate * dW[l][i][k];
                 }
             }
@@ -327,25 +399,12 @@ struct Net {
 
     void zero_grad() {
         // reset the gradients  
-        for(int l = 0; l < num_layers; l++) {
-            for(int i = 0; i < dH[l].size(); i++) {
-                dH[l][i] = 0;
-                H[l][i] = 0;
-            }
-        }
-
-        for(int l = 0; l + 1 < num_layers; l++) {
-            assert(dB[l].size() == H[l+1].size());
-            for(int i = 0; i < H[l+1].size(); i++) {
-                dB[l][i] = 0;
-            }
-            assert(dW[l].size() == H[l].size());
-            assert(dW[l].size() > 0);
-            assert(dW[l][0].size() == H[l+1].size());
-            for(int i = 0; i < H[l].size(); i++) {
-                for(int k = 0; k < H[l+1].size(); k++) {
-                    dW[l][i][k] = 0;
-                }
+        H = {}, dW = {};
+        for(int i = 0; i < layers.size();i++) {
+            H.push_back(vector<vector<ld>>(batch_size));
+            if(i + 1 < layers.size()) {
+                /* +1 comes for the bias */
+                dW.push_back(vector<vector<ld>>(layers[i] + 1, vector<ld>(layers[i+1]))); 
             }
         }
     }
@@ -360,59 +419,47 @@ struct Net {
             for(int i = 0; i < x.size(); i++) idx.push_back(i);
             shuffle(idx.begin(), idx.end(), rng);
 
-            /* one pass over all training data */
             ld total_loss = 0;
 
-            for(int m = 0; m < y.size(); m++) {
-                int i = idx[m];
-                assert(x[i].size() == 28 * 28);
-                load(x[i]);
+            int cur = 0;
+            while(cur < x.size()) {
+                vector<int> minibatch_indices;
+                for(int j = 0; j < batch_size && cur + j < x.size(); j++) {
+                    minibatch_indices.push_back(idx[cur + j]);
+                }
+                vector<vector<float>> minibatch_X;
+                vector<uint8_t> minibatch_Y;
+                for(auto i : minibatch_indices) {
+                    minibatch_X.push_back(x[i]);
+                    minibatch_Y.push_back(y[i]);
+                }
+                load(minibatch_X);
                 forward();
-                total_loss += cost(y[i]);
-
-                // cout << "before backward \n";
-                // debug();
-                backward(y[i]);
+                total_loss += cost(minibatch_Y);
+                backward(minibatch_Y);
                 step(learning_rate);
-
-                // cout << "after step \n";
-                // debug();
-
                 zero_grad();
+                cur += batch_size;
             }
-            
-            total_loss /= x.size();
 
+            total_loss /= x.size();
             cout << "epoch : " << n << " loss : " << total_loss << endl; 
  
             /* stop early when loss is already small enough to prevent precision issue occuring */
-            if (total_loss < 0.001) {
+            if (total_loss < 1e-6) {
                 break;
             }
         }   
     }
 
     int eval(vector<float> x, int label) {
-        // cout << "receive " << label << '\n';
-        load(x);
+        eval_init();
+        load({x}); /* take batch_size = 1 for evals */ 
         forward();
-        vector<ld> applied_softmax = softmax(H[num_layers - 1]);
+        vector<ld> applied_softmax = softmax(H[num_layers - 1][0]); /* since batch_size = 1 */
         assert(applied_softmax.size() == 10);
-        zero_grad(); /* the H vector needs to be reset */
 
-        // cout << "view softmax " << endl;
-        // for(auto x : applied_softmax) {
-        //     cout << x << " ";
-        // }
-        // cout << endl;
-
-        int argmax = 0;
-        for(int i = 0; i < 10; i++) {
-            if(applied_softmax[argmax] < applied_softmax[i]) {
-                argmax = i;
-            }
-        }
-
+        auto argmax = max_element(applied_softmax.begin(), applied_softmax.end()) - applied_softmax.begin();
         return argmax;
     }
 
@@ -461,6 +508,7 @@ int main() {
     const int num_train = 6000;
     const int num_val = 1000;
     const int num_epochs = 100;
+    const int batch_size = 10; /* ensure batch_size divides num_train */
     const double learning_rate = 0.001;
 
     cout << "num_train: " << num_train << endl;
@@ -479,7 +527,7 @@ int main() {
         }
     }
 
-    Net nn(layers); // takes in num_layers as parameter
+    Net nn(layers, batch_size); // takes in num_layers as parameter
 
     cout << "train.images.size = " << train.images.size() << endl;
 
