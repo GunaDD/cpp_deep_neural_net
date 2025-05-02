@@ -115,11 +115,12 @@ so dL/dx = dL/dy W^T
 
 */
 
+const ld beta = 0.9;
 
 struct Net {
     /* We stack the bias on the weight and add another column to x = [x_1 ... x_m 1] */
     vector<vector<vector<ld>>> W, H;
-    vector<vector<vector<ld>>> dW, dH;
+    vector<vector<vector<ld>>> dW, dH, momentum;
  
     int num_layers, batch_size; // num of hidden layer + 1 (includes the output layer)
     vector<int> layers;
@@ -137,6 +138,8 @@ struct Net {
             H.push_back(vector<vector<ld>>(batch_size));
             dH.push_back(vector<vector<ld>>(batch_size, vector<ld>(layers[i])));
         }
+
+        momentum = W;
 
         /* Initialize weight with Kaiming Initialization */
         const double gain = sqrt(2);
@@ -385,9 +388,29 @@ struct Net {
     void step(ld learning_rate) {
         // update weights & biases
         for(int l = 0; l + 1 < num_layers; l++) {
+            /*
+            ld norm = 0;
             for(int i = 0; i < layers[l]; i++) {
                 for(int k = 0; k < layers[l+1]; k++) {
-                    W[l][i][k] -= learning_rate * dW[l][i][k];
+                    norm += W[l][i][k] * W[l][i][k];
+                }
+            }
+            norm = sqrt(norm);
+            ld clip_tresh = 100.0;
+            if(norm > clip_tresh) {
+                cout << "norm: " << norm << endl;
+                for(int i = 0; i < layers[l]; i++) {
+                    for(int k = 0; k < layers[l+1]; k++) {
+                        W[l][i][k] *= clip_tresh / norm;
+                    }
+                }
+            }
+            */
+
+            for(int i = 0; i < layers[l]; i++) {
+                for(int k = 0; k < layers[l+1]; k++) {
+                    momentum[l][i][k] = beta * momentum[l][i][k] + (1 - beta) * dW[l][i][k];
+                    W[l][i][k] -= learning_rate * momentum[l][i][k];
                 }
             }
         }
@@ -442,7 +465,7 @@ struct Net {
             cout << "epoch : " << n << " loss : " << total_loss << endl; 
  
             /* stop early when loss is already small enough to prevent precision issue occuring */
-            if (total_loss < 1e-3) {
+            if (total_loss < 1e-6) {
                 break;
             }
         }   
@@ -452,24 +475,9 @@ struct Net {
         eval_init();
         load({x}); /* take batch_size = 1 for evals */ 
         forward(1);
-
-        cout << "debug logit " << endl;
-        for(int i = 0; i < 10; i++) {
-            cout << H[num_layers - 1][0][i] << " ";
-        }
-
-        cout << endl;
-        
         assert(H[num_layers - 1][0].size() == 10);
         vector<ld> applied_softmax = softmax(H[num_layers - 1][0]); /* since batch_size = 1 */
         assert(applied_softmax.size() == 10);
-
-        cout << "debug softmax " << endl;
-
-        for(int i = 0; i < 10; i++) {
-            cout << applied_softmax[i] << " ";
-        }
-        cout << endl;
 
         auto argmax = max_element(applied_softmax.begin(), applied_softmax.end()) - applied_softmax.begin();
         return argmax;
@@ -517,11 +525,11 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    const int num_train = 1000;
-    const int num_val = 1000;
-    const int num_epochs = 10;
+    const int num_train = 10000;
+    const int num_val = 10000;
+    const int num_epochs = 100;
     const int batch_size = 10; /* ensure batch_size divides num_train */
-    const double learning_rate = 0.001;
+    const double learning_rate = 0.0001;
 
     cout << "num_train: " << num_train << endl;
     cout << "num_val: " << num_val << endl;
@@ -560,7 +568,7 @@ int main() {
         int pred = nn.eval(val.images[k], val.labels[k]);
         int label = int(val.labels[k]);
         correct += pred == label;
-        cout << "predicted: " << pred << " true label: " << label << endl;
+        // cout << "predicted: " << pred << " true label: " << label << endl;
     }
 
     cout << "accuracy : " << (ld) correct / num_val * 100 << endl;
