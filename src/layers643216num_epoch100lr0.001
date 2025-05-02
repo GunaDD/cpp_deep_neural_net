@@ -1,0 +1,2 @@
+ds.images.size = 10000 ds.labels.size = 10000
+ds.images[0].size = 784

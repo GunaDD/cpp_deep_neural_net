@@ -210,7 +210,6 @@ struct Net {
         assert(out_layer.size() == 10); /* assuming output layer has 10 units */
 
         ld m = *max_element(out_layer.begin(), out_layer.end());
-
         ld sum = 0;
         for(int i = 0; i < out_layer.size(); i++) {
             sum += exp(out_layer[i] - m);
@@ -222,12 +221,6 @@ struct Net {
             res.push_back(exp(out_layer[i] - m) / sum);
             check_sum += res.back();
         } 
-
-        // cout << "debug applying the softmax " << endl;
-        // for(auto x : res) {
-        //     cout << fixed << setprecision(8) << x << " ";
-        // }
-        // cout << endl;
 
         return res;
     }   
@@ -441,10 +434,11 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    const int num_samples = 20;
+    const int num_samples = 100;
     const int num_epochs = 100;
+    const int learning_rate = 0.001;
 
-    vector<int> layers = {28*28, 32, 32, 10};
+    vector<int> layers = {28*28, 64, 32, 16, 10};
 
     Dataset ds = load("../data/mnist/train-images.f32", "../data/mnist/train-labels.u8", num_samples);
 
@@ -460,7 +454,7 @@ int main() {
     cout << "ds.images.size = " << ds.images.size() << " ds.labels.size = " << ds.labels.size() << endl;
     cout << "ds.images[0].size = " << ds.images[0].size() << endl;
 
-    nn.train(ds.images, ds.labels, num_epochs, 0.01);
+    nn.train(ds.images, ds.labels, num_epochs, learning_rate);
 
     nn.debug();
 
