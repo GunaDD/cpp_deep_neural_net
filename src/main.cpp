@@ -168,12 +168,8 @@ struct Net {
     }
 
     void eval_init() {
-        W = {}, H = {};
+        H = {};
         for(int i = 0; i < layers.size();i++) {
-            if(i + 1 < layers.size()) {
-                /* +1 comes for the bias */
-                W.push_back(vector<vector<ld>>(layers[i] + 1, vector<ld>(layers[i+1]))); 
-            }
             H.push_back(vector<vector<ld>>(1)); /* batch_size = 1*/
         }
     }
@@ -186,7 +182,7 @@ struct Net {
     }
 
     void load(vector<vector<float>> X) {
-        assert(X.size() == batch_size);
+        assert(X.size() == batch_size || X.size() == 1);
         assert(X[0].size() == 28*28);
 
         for(int i = 0; i < X.size(); i++) {
@@ -233,7 +229,7 @@ struct Net {
         }
     }
 
-    void forward() {
+    void forward(int batch_size) {
         for(int l = 0; l + 1 < num_layers; l++) {
             auto X = H[l];
             for(int b = 0; b < batch_size; b++) {
@@ -434,7 +430,7 @@ struct Net {
                     minibatch_Y.push_back(y[i]);
                 }
                 load(minibatch_X);
-                forward();
+                forward(batch_size);
                 total_loss += cost(minibatch_Y);
                 backward(minibatch_Y);
                 step(learning_rate);
@@ -446,7 +442,7 @@ struct Net {
             cout << "epoch : " << n << " loss : " << total_loss << endl; 
  
             /* stop early when loss is already small enough to prevent precision issue occuring */
-            if (total_loss < 1e-6) {
+            if (total_loss < 1e-3) {
                 break;
             }
         }   
@@ -455,9 +451,25 @@ struct Net {
     int eval(vector<float> x, int label) {
         eval_init();
         load({x}); /* take batch_size = 1 for evals */ 
-        forward();
+        forward(1);
+
+        cout << "debug logit " << endl;
+        for(int i = 0; i < 10; i++) {
+            cout << H[num_layers - 1][0][i] << " ";
+        }
+
+        cout << endl;
+        
+        assert(H[num_layers - 1][0].size() == 10);
         vector<ld> applied_softmax = softmax(H[num_layers - 1][0]); /* since batch_size = 1 */
         assert(applied_softmax.size() == 10);
+
+        cout << "debug softmax " << endl;
+
+        for(int i = 0; i < 10; i++) {
+            cout << applied_softmax[i] << " ";
+        }
+        cout << endl;
 
         auto argmax = max_element(applied_softmax.begin(), applied_softmax.end()) - applied_softmax.begin();
         return argmax;
@@ -505,9 +517,9 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    const int num_train = 6000;
+    const int num_train = 1000;
     const int num_val = 1000;
-    const int num_epochs = 100;
+    const int num_epochs = 10;
     const int batch_size = 10; /* ensure batch_size divides num_train */
     const double learning_rate = 0.001;
 
@@ -532,8 +544,6 @@ int main() {
     cout << "train.images.size = " << train.images.size() << endl;
 
     nn.train(train.images, train.labels, num_epochs, learning_rate);
-
-    nn.debug();
 
     Dataset val = load("../data/mnist/t10k-images.f32", "../data/mnist/t10k-labels.u8", num_val);
 
