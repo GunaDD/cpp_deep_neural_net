@@ -58,7 +58,7 @@ int main() {
     }
     out << endl;
 
-    vector<pair<int,ld>> lr_schedule = {{5, 1e-3}, {20, 1e-4}, {50, 5e-4}, {200, 1e-5}}; 
+    vector<pair<int,ld>> lr_schedule = {{5, 2e-4}, {20, 1e-4}, {50, 1e-5}, {200, 1e-6}}; 
 
     out << "learning rate schedule: ";
     for(auto [epoch, lr] :lr_schedule) {
@@ -66,7 +66,7 @@ int main() {
     }
     out << endl;
 
-    Dataset train = load("../data/mnist/train-images.f32", "../data/mnist/train-labels.u8", num_train);
+    Dataset train = load("./data/mnist/train-images.f32", "./data/mnist/train-labels.u8", num_train);
 
     /* normalize */
     for(auto &x:train.images) {
