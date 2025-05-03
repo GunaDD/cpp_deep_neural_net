@@ -32,55 +32,19 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    const string experiment_name = "full_trainset_200_epoch_with_lr_schedule";
-    const int num_train = 60000;
+    const string experiment_name = "full_trainset_200_epoch";
+    const int batch_size = 10;
     const int num_val = 10000;
-    const int num_epochs = 200;
-    const int batch_size = 10; /* ensure batch_size divides num_train */
-    // const double learning_rate = 0.0001;
-
-    namespace fs = std::filesystem;
-
-    string path = "../params/";
-    path += experiment_name;
-
-    ofstream out(path, ios::out | ios::trunc);
-
-    out << "num_train: " << num_train << endl;
-    out << "num_val: " << num_val << endl;
-    out << "num_epochs: " << num_epochs << endl;
-
     vector<int> layers = {28*28, 32, 32, 10};
-
-    out << "layers:";
-    for(auto l: layers) {
-        out << l << " ";
-    }
-    out << endl;
-
-    vector<pair<int,ld>> lr_schedule = {{5, 1e-3}, {20, 1e-4}, {50, 5e-4}, {200, 1e-5}}; 
-
-    out << "learning rate schedule: ";
-    for(auto [epoch, lr] :lr_schedule) {
-        out << epoch << " " << lr << "\n";
-    }
-    out << endl;
-
-    Dataset train = load("../data/mnist/train-images.f32", "../data/mnist/train-labels.u8", num_train);
-
-    /* normalize */
-    for(auto &x:train.images) {
-        for(auto &y: x) {
-            y /= 255.0;
-        }
-    }
 
     Net nn(layers, batch_size, experiment_name); // takes in num_layers as parameter
 
-    out << "train.images.size = " << train.images.size() << endl;
+    string path = "../weights/";
+    path += experiment_name;
+    path += "/";
+    path += "epoch20"; /* specify the epoch number */
 
-    nn.train(train.images, train.labels, num_epochs, lr_schedule);
-
+    nn.load_model(path);
     Dataset val = load("../data/mnist/t10k-images.f32", "../data/mnist/t10k-labels.u8", num_val);
 
     for(auto &x:val.images) {
@@ -89,7 +53,7 @@ int main() {
         }
     }
 
-    out << "val.images.size = " << val.images.size() << endl;
+    cout << "val.images.size = " << val.images.size() << endl;
 
     int correct = 0;
     for(int k = 0; k < num_val; k++) {
@@ -98,5 +62,5 @@ int main() {
         correct += pred == label;
     }
 
-    out << "accuracy : " << (ld) correct / num_val * 100 << endl;
+    cout << "accuracy : " << (ld) correct / num_val * 100 << endl;
 }

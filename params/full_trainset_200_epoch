@@ -1,6 +1,10 @@
 num_train: 60000
 num_val: 10000
 num_epochs: 200
-learning_rate: 0.0001
 layers:784 32 32 10 
+learning rate schedule: 5 0.001
+20 0.0001
+50 0.0005
+200 1e-05
+
 train.images.size = 60000
