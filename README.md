@@ -49,9 +49,13 @@
 $ git clone https://github.com/GunaDD/cpp_deep_neural_net.git
 $ cd cpp_deep_neural_net
 $ make main
+```
 
+Before running `make main`, you can tune the model parameters (e.g. num of layers, learning rate schedule, weight initializations, experiment name) from the `main.cpp` file 
 
 Executables are placed in **`bin/`**.
+
+If you only want to inference from trained model weight, 
 
 ---
 
