@@ -21,9 +21,9 @@
 ```text
 .
 ├── src/            # C++ source 
-│   ├── neural_net.h
-│   ├── inference.cpp
-│   └── main.cpp
+│   ├── neural_net.h    # Implementation of the Neural Network
+│   ├── inference.cpp   # Run inference on trained weights
+│   └── main.cpp        # Train and save model weights
 ├── scripts/        # Helper Python scripts (dataset download)
 ├── params/         # Hyper‑parameter files
 ├── weights/        # Saved checkpoints 
@@ -75,7 +75,7 @@ $ cd cpp_deep_neural_net
 **How to train the model:**
 ```bash
 make main
-./bin/main
+./bin/main < ./logs/train_[experiment_name]
 ```
 
 Before running the commands, you can tune the model parameters (e.g. num of layers, learning rate schedule, weight initializations, experiment name) from the `main.cpp` file 
@@ -84,7 +84,7 @@ Before running the commands, you can tune the model parameters (e.g. num of laye
 
 ```bash
 make inference
-./bin/inference
+./bin/inference < ./logs/inference_[experiment_name]
 ```
 
 Before running the command, you can specify the experiment name and the epoch number of the weights you want to load for to be used during inference time.
