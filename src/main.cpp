@@ -41,7 +41,7 @@ int main() {
 
     namespace fs = std::filesystem;
 
-    string path = "../params/";
+    string path = "./params/";
     path += experiment_name;
 
     ofstream out(path, ios::out | ios::trunc);
@@ -81,7 +81,7 @@ int main() {
 
     nn.train(train.images, train.labels, num_epochs, lr_schedule);
 
-    Dataset val = load("../data/mnist/t10k-images.f32", "../data/mnist/t10k-labels.u8", num_val);
+    Dataset val = load("./data/mnist/t10k-images.f32", "./data/mnist/t10k-labels.u8", num_val);
 
     for(auto &x:val.images) {
         for(auto &y: x) {

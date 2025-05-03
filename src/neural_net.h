@@ -547,4 +547,12 @@ struct Net {
             }
         }
     }
+
+    int num_params() {
+        int sum = 0;
+        for(int l = 0; l + 1 < num_layers; l++) {
+            sum += W[l].size() * W[l][0].size();
+        }
+        return sum;
+    }
 };

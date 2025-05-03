@@ -38,11 +38,13 @@
 ### Prerequisites
 
 * Linux or macOS
-* **g++ ≥ 10** or **clang ≥ 12** (C++17)
-* **CMake ≥ 3.15** *or* GNU **make**
+* **g++ ≥ 10** (C++17)
+* GNU make
 * Python 3 (optional, for helper scripts)
 
 ### Build
+
+**How to prepare the dataset:**
 
 Download the MNIST data and place it at `data/mnist`.
 It should contain:
@@ -70,7 +72,7 @@ $ git clone https://github.com/GunaDD/cpp_deep_neural_net.git
 $ cd cpp_deep_neural_net
 ```
 
-How to train:
+**How to train the model:**
 ```bash
 make main
 ./bin/main
@@ -78,7 +80,7 @@ make main
 
 Before running the commands, you can tune the model parameters (e.g. num of layers, learning rate schedule, weight initializations, experiment name) from the `main.cpp` file 
 
-How to inference:
+**How to inference:**
 
 ```bash
 make inference
@@ -95,9 +97,9 @@ Executables are placed in **`bin/`**.
 
 ## 📊 Results (MNIST)
 
-| Model              | Parameters | Test accuracy |
-| ------------------ | ---------: | ------------: |
-|                    |            |    ** ** |
+| Model                     | Parameters | Test accuracy |
+| ------------------        | ---------: | ------------: |
+| full_trainset_200_epoch   | 26506      |    **92.91%** |
 
 ---
 

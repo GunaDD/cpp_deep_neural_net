@@ -32,17 +32,21 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    const string experiment_name = "full_trainset_200_epoch_with_lr_schedule";
+
+    const string experiment_name = "full_trainset_200_epoch"; /* change this!! */
+
     const int batch_size = 10;
     const int num_val = 10000;
     vector<int> layers = {28*28, 32, 32, 10};
 
     Net nn(layers, batch_size, experiment_name); // takes in num_layers as parameter
 
-    string path = "../weights/";
+    cout << "num of params = " << nn.num_params() << endl;
+    
+    string path = "./weights/";
     path += experiment_name;
     path += "/";
-    path += "epoch40"; /* specify the epoch number */
+    path += "epoch30"; /* change this!! */
 
     nn.load_model(path);
     Dataset val = load("./data/mnist/t10k-images.f32", "./data/mnist/t10k-labels.u8", num_val);
