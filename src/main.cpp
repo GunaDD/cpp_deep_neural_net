@@ -43,7 +43,6 @@ int main() {
 
     string path = "./params/";
     path += experiment_name;
-
     ofstream out(path, ios::out | ios::trunc);
 
     out << "num_train: " << num_train << endl;

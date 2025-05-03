@@ -25,6 +25,7 @@
 │   ├── inference.cpp   # Run inference on trained weights
 │   └── main.cpp        # Train and save model weights
 ├── scripts/        # Helper Python scripts (dataset download)
+|   └── fetch_mnist.py
 ├── params/         # Hyper‑parameter files
 ├── weights/        # Saved checkpoints 
 ├── logs/           # Training logs 
@@ -43,6 +44,13 @@
 * Python 3 (optional, for helper scripts)
 
 ### Build
+
+Firstly, perform the following:
+```bash
+# Clone
+$ git clone https://github.com/GunaDD/cpp_deep_neural_net.git
+$ cd cpp_deep_neural_net
+```
 
 **How to prepare the dataset:**
 
@@ -65,12 +73,6 @@ train-images.f32
 train-labels.u8
 ```
 
-
-```bash
-# Clone
-$ git clone https://github.com/GunaDD/cpp_deep_neural_net.git
-$ cd cpp_deep_neural_net
-```
 
 **How to train the model:**
 ```bash

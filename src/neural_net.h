@@ -10,125 +10,19 @@ const int SZ = 784;
 const ld eps = 1e-15;
 const ld beta = 0.9;
 
-/* 
-let z_1, z_2, ..., z_10 be the outputs of the neural net
-let y_1, y_2, ..., y_s be the correct answer of the input x_1, x_2, ..., x_s
-
-total loss = - sum i from 1 to s log(softmax(y_i))
-softmax(y_i) = e^{z_{y_i}} / sum k=0 to 9 e^{k}
-
-dLoss / d z_i = dLoss/dsoftmax(y_i) * dsoftmax(y_i)/dz_i
-
-dLoss/dsoftmax(y_i) = -1/softmax(y_i) 
-dsoftmax(y_i) / dz_i = 
-    if y_i == i:
-        (e^{z_{y_i}} * (sum k=0 to 9 e^{z_k}) - e^{z_{y_i}} * e^{z_i}) / (sum k=0 to 9 e^{k})^2
-        = e^{z_{y_i}} ( (sum k=0 to 9 e^{z_k}) - e^{z_i} ) / (sum k=0 to 9 e^{k})^2
-        = softmax(y_i) * ( (sum k=0 to 9 e^{z_k}) - e^{z_i} )
-    else:
-        (- e^{z_{y_i}} * e^{z_i}) / (sum k=0 to 9 e^{z_k})^2 = softmax(y_i) * (-e^{z_i})
-
-dLoss / d z_i = 
-    if y_i == i:
-        (-1/softmax(y_i)) * softmax(y_i) * ( (sum k=0 to 9 e^{k}) - e^{z_i} ) = e^{z_i} - (sum k=0 to 9 e^{z_k})
-    else:
-        (-1/softmax(y_i)) * softmax(y_i) * (-e^{z_i}) = e^{z_i}
-
-    so its equal to e^{z_i} - (y_i == i) * (sum k=0 to 9 e^{z_k})
-*/
-
-
-/*
-Going from the l+1-th layer to the l-th layer
-Let y be the output of the l+1-th layer and x be the output of the l-th layer
-
-then y = xW + b with W,b being weights and biases
-
-we have dL/dy, we want dL/dx, dL/dW and dL/db so that we can update the weights and biases 
-for this layer and update the previous layer
-
-We suppose that we are training in one batch currently
-
-Then y = xW + b
-
-[y_1 y_2 .... y_N ] = [x_1 x_2 ... x_N ]    [w_11 ..... w_1N
-                                                w_21 ..... w_2N
-                                                .....
-                                                w_M1 ..... W_MN]
-
-dL/dW   = (dL / dy) * (dy / dW)
-        = [dL/dy_1 .... dL/dy_N ] (dy / dw_11)
-
-then we know that dL/dW is of the form
-
-[dL/w_11 ..... dL/w_1N
-    dL/w_21 ..... dL/w_2N
-    .
-    .
-    .
-    dL/w_M1 ..... dL/w_MN]
-
-    so then dL/w_11 is a constant, also
-    dL/dw_11 = [dL/dy_1 .... dL/dy_N] * (dy/dw_11)
-    both of these implies dy/dw_11 is a column vector
-
-    now looking back at the [y_1 .... y_n] = [x_1 .... x_m] W equality
-    we get that
-
-    dL/dw_11 = [x_1 0 0 0 0 ... 0]^T
-    
-    then similarly
-    dL/dw_12 = [0 x_1 0 0 0 ... 0]^T
-    dL/dw_21 = [x_2 0 0 0 0 ... 0]^T
-
-then by dL/dw_11 = [dL/dy_1 .... dy_N] (dy/dw_11)
-it follows dL/dw_11 = (dL/dy_1) * x1
-similarly dL/dw_12 = (dL/dy_2) * x1, dL/w_21 = (dL/y_1) * x2 .... 
-
-so dL/dw equal to
-[(dL/dy_1) * x1, ..... , (dL/dy_N) * x1
-    (dL/dy_1) * x2, ..... 
-    .
-    .
-    (dL/dy_1) * xm, ..... , (dL/dy_N) * xm]
-
-
-Now we want to derive dL/db
-
-dL/db   = (dL/dy) * (dy/db)
-        = [dL/dy_1 .... dL/dy_N] * (dy/db)
-
-implies (dy/db) column vector
-dy/db = [dy_1/db .... dy_N/db]^T
-
-back to y = xW + b -> [y_1 ... y_N] = [x_1 ... x_M] W + [b .... b] (N times)
-we see that dy_1/db = dy_2/db = ... = dy_N/db = 1
-so dL/db = dL/dy
-
-Now we want to find dL/dx
-
-by chain rule dL/dx = (dL/dy) * (dy/dx)
-since dimension of dL/dy is 1 x N and dimension of 1 x M
-then dy/dx has dimension N x M
-
-by expanding [ y_1 .... y_N ] = [ x_1 .... x_M ] W + b
-we see that dy_1/dx_1 = w_11, dy_1/dx_2 = w_21, dy_2/dx_1 = w_12
-hence dy/dx = W^T
-so dL/dx = dL/dy W^T
-
-*/
-
-
-
 struct Net {
-    /* We stack the bias on the weight and add another column to x = [x_1 ... x_m 1] */
+    /* We stack the bias on the weight and pad another column to x = [x_1 ... x_m 1] */
     vector<vector<vector<ld>>> W, H;
+    /* Parameters for the gradient terms */
     vector<vector<vector<ld>>> dW, dH, momentum;
     
     string experiment_name;
-    int num_layers, batch_size; // num of hidden layer + 1 (includes the output layer)
+    /* num_layers = # hidden layers + 1 (includes the output layer) */
+    int num_layers, batch_size; 
+    /* layer[l] = # hidden unit in each layer */
     vector<int> layers;
 
+    /* Initialize the gradient terms, logits, and weights to start new training */
     void train_init() {
         /* size of H is 1 more than size of W and B */
         W = {};
@@ -174,6 +68,7 @@ struct Net {
         // }
     }
 
+    /* Re-initialize the logits to perform new eval */
     void eval_init() {
         H = {};
         for(int i = 0; i < layers.size();i++) {
@@ -181,6 +76,7 @@ struct Net {
         }
     }
 
+    /* Defines the neural network */
     Net(vector<int> layers, int K, string experiment_name) { /* vector representing number of hidden unit in each layer, K = batch size */
         this->num_layers = layers.size();
         this->batch_size = K; 
@@ -189,6 +85,7 @@ struct Net {
         train_init();
     }
 
+    /* Loads the description of the input pixels to the neural network to prepare for a forward pass */
     void load(vector<vector<float>> X) {
         assert(X.size() == batch_size || X.size() == 1);
         assert(X[0].size() == 28*28);
@@ -201,6 +98,7 @@ struct Net {
         }
     }
 
+    /* Multiplies two matrices A and B */
     vector<vector<ld>> matmul(vector<vector<ld>> A, vector<vector<ld>> B) {
         assert(A.size() > 0 && A[0].size() == B.size());
         int n = A.size();
@@ -217,6 +115,7 @@ struct Net {
         return res;
     }
 
+    /* Returns the transpose of A */
     vector<vector<ld>> transpose(vector<vector<ld>> A) {
         int n = A.size();
         int m = A[0].size();
@@ -229,6 +128,7 @@ struct Net {
         return res;
     }
 
+    /* Perform ReLU on each element of A */
     void ReLU(vector<vector<ld>> &A) {
         for(auto &x:A) {
             for(auto &y:x) {
@@ -237,14 +137,12 @@ struct Net {
         }
     }
 
+    /* Perform forward pass on the neural network */
     void forward(int batch_size) {
         for(int l = 0; l + 1 < num_layers; l++) {
             auto X = H[l];
             for(int b = 0; b < batch_size; b++) {
                 X[b].push_back((ld)1);
-            }
-            if(W[l].size() != X[0].size()) {
-                cout << "layer " << l << " " << W[l].size() << " " << X[0].size() << endl;
             }
             assert(W[l].size() == X[0].size());
             H[l+1] = matmul(X, W[l]); 
@@ -252,7 +150,10 @@ struct Net {
         }
     }
 
-    /* Loss = -sum log softmax_{} */
+    /* Calculates the softmax function 
+    sum = \sum_{i=0}^{n-1} exp(out_layer[i])
+    returns {exp(out_layer[0])/sum, exp(out_layer[1])/sum, ..., exp(out_layer[n-1])/sum} 
+    */
     vector<ld> softmax(vector<ld> out_layer) {
         assert(out_layer.size() == 10); /* assuming output layer has 10 units */
 
@@ -272,7 +173,7 @@ struct Net {
         return res;
     }   
 
-    /* multiclass cross-entropy loss, takes in a set of labels */
+    /* Calculates the multiclass cross entropy loss */
     ld cost(vector<uint8_t> y) {
         assert(y.size() == batch_size);
         ld sum = 0;
@@ -284,48 +185,32 @@ struct Net {
         return sum / static_cast<ld>(batch_size);
     }
 
-    /*
-    Summary:
-    For batch size = 1
-    * dL / dW = matmul(x^T, dL/dy)
-    * dL / db = dL / dy
-    * dL / dx = matmul(dL/dy, W^T)
-
-    Extending to batch size > 1
-    * dL / dW : the loss is the sum over all elements in the batch
-    dL / dW = matmul(x_1^T, dL / dy) + ... + matmul(x_k^T, dL / dy)
-            = matmul(X^T, dL / dY)
-
-            the dL / dY = stack each dL / dy for each item in the batch
-            dL / dY \in R^{B x N}
-
-    * dL / db = [ \sum dL/dy_1, ...., \sum dL / dy_N] where \sum run over all batchs
-
-    * dL / dX = matmul(dL / dY, W^T) 
-    to see this 
-    we notice that dL / dX is equal to
-    [   [dL / dx (for batch 1)]
-        [dL / dx (for batch 2)]
-        .
-        .
-        .
-        [dL / dx (for batch K)]
-    ] = 
-
-    [ 
-        [dL / dy (for batch 1)]
-        .
-        .
-        .
-        [dL / dy (for batch K)]
-    ] * W^T
-    we notice now the W^T must be the same (by equating how we get each row of the LHS)
-    */
-
     void backward(vector<uint8_t> y) {
         // initalizing the first dL/dy
         assert(y.size() == batch_size);
 
+        /* How to derive backpropagation formulas:
+        Notations: 
+        Let z_1, z_2, ..., z_10 be the outputs of the neural net
+        Let y_1, y_2, ..., y_s be the correct answer of the input x_1, x_2, ..., x_s
+
+        Loss = - sum i from 1 to s log(softmax(y_i))
+        softmax(y_i) = e^{z_{y_i}} / \sum_{k=0}^{9} e^{k}
+
+        dLoss / d z_i = dLoss/dsoftmax(y_i) * dsoftmax(y_i)/dz_i
+
+        dLoss/dsoftmax(y_i) = -1/softmax(y_i) 
+        dsoftmax(y_i) / dz_i = 
+            if y_i == i:
+                (e^{z_{y_i}} * (sum k=0 to 9 e^{z_k}) - e^{z_{y_i}} * e^{z_i}) / (sum k=0 to 9 e^{k})^2
+                = e^{z_{y_i}} ( (sum k=0 to 9 e^{z_k}) - e^{z_i} ) / (sum k=0 to 9 e^{k})^2
+                = softmax(y_i) * ( 1 - e^{z_i} / (sum k=0 to 9 e^{k}) )
+            else:
+                (- e^{z_{y_i}} * e^{z_i}) / (sum k=0 to 9 e^{z_k})^2 
+                = softmax(y_i) * (-e^{z_i}) / (sum k=0 to 9 e^{z_k})
+
+        dLoss / d z_i = softmax(y_i) * ( (y_i == i ? 1 : 0) - e^{z_i} / (sum k=0 to 9 e^{k}) )
+        */
         for(int b = 0; b < batch_size; b++) {
             assert(dH[num_layers - 1][b].size() == 10);
             ld m = *max_element(H[num_layers - 1][b].begin(), H[num_layers - 1][b].end());
@@ -340,6 +225,123 @@ struct Net {
             }
         }
 
+        /* Detailed intuition on deriving the backprop formula:
+        Going from the l+1-th layer to the l-th layer
+        Let y be the output of the l+1-th layer and x be the output of the l-th layer
+
+        then y = xW + b with W,b being weights and biases
+
+        we have dL/dy, we want dL/dx, dL/dW and dL/db so that we can update the weights and biases 
+        for this layer and update the previous layer
+
+        We suppose that we are training in one batch currently
+
+        Then y = xW + b
+
+        [y_1 y_2 .... y_N ] = [x_1 x_2 ... x_N ]    [w_11 ..... w_1N
+                                                        w_21 ..... w_2N
+                                                        .....
+                                                        w_M1 ..... W_MN]
+
+        dL/dW   = (dL / dy) * (dy / dW)
+                = [dL/dy_1 .... dL/dy_N ] (dy / dw_11)
+
+        then we know that dL/dW is of the form
+
+        [dL/w_11 ..... dL/w_1N
+            dL/w_21 ..... dL/w_2N
+            .
+            .
+            .
+            dL/w_M1 ..... dL/w_MN]
+
+            so then dL/w_11 is a constant, also
+            dL/dw_11 = [dL/dy_1 .... dL/dy_N] * (dy/dw_11)
+            both of these implies dy/dw_11 is a column vector
+
+            now looking back at the [y_1 .... y_n] = [x_1 .... x_m] W equality
+            we get that
+
+            dL/dw_11 = [x_1 0 0 0 0 ... 0]^T
+            
+            then similarly
+            dL/dw_12 = [0 x_1 0 0 0 ... 0]^T
+            dL/dw_21 = [x_2 0 0 0 0 ... 0]^T
+
+        then by dL/dw_11 = [dL/dy_1 .... dy_N] (dy/dw_11)
+        it follows dL/dw_11 = (dL/dy_1) * x1
+        similarly dL/dw_12 = (dL/dy_2) * x1, dL/w_21 = (dL/y_1) * x2 .... 
+
+        so dL/dw equal to
+        [(dL/dy_1) * x1, ..... , (dL/dy_N) * x1
+            (dL/dy_1) * x2, ..... 
+            .
+            .
+            (dL/dy_1) * xm, ..... , (dL/dy_N) * xm]
+
+
+        Now we want to derive dL/db
+
+        dL/db   = (dL/dy) * (dy/db)
+                = [dL/dy_1 .... dL/dy_N] * (dy/db)
+
+        implies (dy/db) column vector
+        dy/db = [dy_1/db .... dy_N/db]^T
+
+        back to y = xW + b -> [y_1 ... y_N] = [x_1 ... x_M] W + [b .... b] (N times)
+        we see that dy_1/db = dy_2/db = ... = dy_N/db = 1
+        so dL/db = dL/dy
+
+        Now we want to find dL/dx
+
+        by chain rule dL/dx = (dL/dy) * (dy/dx)
+        since dimension of dL/dy is 1 x N and dimension of 1 x M
+        then dy/dx has dimension N x M
+
+        by expanding [ y_1 .... y_N ] = [ x_1 .... x_M ] W + b
+        we see that dy_1/dx_1 = w_11, dy_1/dx_2 = w_21, dy_2/dx_1 = w_12
+        hence dy/dx = W^T
+        so dL/dx = dL/dy W^T
+
+        */
+
+
+        /* Summary:
+        For batch size = 1
+        * dL / dW = matmul(x^T, dL/dy)
+        * dL / db = dL / dy
+        * dL / dx = matmul(dL/dy, W^T)
+
+        Extending to batch size > 1
+        * dL / dW : the loss is the sum over all elements in the batch
+        dL / dW = matmul(x_1^T, dL / dy) + ... + matmul(x_k^T, dL / dy)
+                = matmul(X^T, dL / dY)
+
+                the dL / dY = stack each dL / dy for each item in the batch
+                dL / dY \in R^{B x N}
+
+        * dL / db = [ \sum dL/dy_1, ...., \sum dL / dy_N] where \sum run over all batchs
+
+        * dL / dX = matmul(dL / dY, W^T) 
+        to see this 
+        we notice that dL / dX is equal to
+        [   [dL / dx (for batch 1)]
+            [dL / dx (for batch 2)]
+            .
+            .
+            .
+            [dL / dx (for batch K)]
+        ] = 
+
+        [ 
+            [dL / dy (for batch 1)]
+            .
+            .
+            .
+            [dL / dy (for batch K)]
+        ] * W^T
+        we notice now the W^T must be the same (by equating how we get each row of the LHS)
+        */
         for(int l = num_layers - 2; l >= 0; l--) {  
             /* y = H[l+1], x = H[l], W = W[l], b = B[l]
             dL/dy = bH[l+1], dL/dx = bH[l] */
@@ -359,8 +361,7 @@ struct Net {
 
             vector<vector<ld>> totdYdX = vector<vector<ld>>(layers[l+1], vector<ld>(layers[l]));
             for(int b = 0; b < batch_size; b++) {
-                /* we process each batch separately to not create confusion
-                create dY/dX for ReLU functions */
+                /* we process each batch separately and add the results */
 
                 vector<vector<ld>> dYdX = transpose(W[l]);
                 for(int i = 0; i < layers[l+1]; i++) {
@@ -390,10 +391,10 @@ struct Net {
         }
     }
 
+    /* Updates the weights with the gradient with Adam */
     void step(ld learning_rate) {
-        // update weights & biases
         for(int l = 0; l + 1 < num_layers; l++) {
-            /*
+            /* Option to clip gradients
             ld norm = 0;
             for(int i = 0; i < layers[l]; i++) {
                 for(int k = 0; k < layers[l+1]; k++) {
@@ -421,8 +422,8 @@ struct Net {
         }
     }
 
+    /* Reset the gradients */
     void zero_grad() {
-        // reset the gradients  
         H = {}, dW = {};
         for(int i = 0; i < layers.size();i++) {
             H.push_back(vector<vector<ld>>(batch_size));
@@ -433,6 +434,7 @@ struct Net {
         }
     }
 
+    /* Main training function, equipped with Stochastic Gradient Descent */
     void train(vector<vector<float>> x, vector<uint8_t> y, int num_epochs, vector<pair<int,ld>> lr_schedule) {
         assert(x.size() == y.size());
         assert(x[0].size() == 28*28);
@@ -493,6 +495,7 @@ struct Net {
         }   
     }
 
+    /* Perform inference, returns the predicted digit */
     int eval(vector<float> x, int label) {
         eval_init();
         load({x}); /* take batch_size = 1 for evals */ 
@@ -505,7 +508,7 @@ struct Net {
         return argmax;
     }
 
-    /* print out model weights */
+    /* Print out model weights to specified path */
     void save_model(const string &path) {
         namespace fs = std::filesystem;
 
@@ -536,6 +539,7 @@ struct Net {
         out.close();
     }
 
+    /* Takes the weight from path and initialize the curren model weight based on it */
     void load_model(const string &path) {
         ifstream in(path);
         for(int l = 0; l + 1 < num_layers; l++) {
@@ -548,6 +552,7 @@ struct Net {
         }
     }
 
+    /* Calculates the total number of parameters of this model */
     int num_params() {
         int sum = 0;
         for(int l = 0; l + 1 < num_layers; l++) {
@@ -556,3 +561,5 @@ struct Net {
         return sum;
     }
 };
+
+
