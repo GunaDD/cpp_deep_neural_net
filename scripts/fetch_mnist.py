@@ -12,7 +12,7 @@ def read_idx(path):
         else:
             raise ValueError('bad magic')
 
-root = pathlib.Path('../data/mnist')
+root = pathlib.Path('./data/mnist')
 x = read_idx(root/'t10k-images-idx3-ubyte')
 y = read_idx(root/'t10k-labels-idx1-ubyte')
 x.astype('float32').tofile(root/'t10k-images.f32')   

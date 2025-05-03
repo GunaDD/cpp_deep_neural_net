@@ -45,7 +45,7 @@ int main() {
     path += "epoch40"; /* specify the epoch number */
 
     nn.load_model(path);
-    Dataset val = load("../data/mnist/t10k-images.f32", "../data/mnist/t10k-labels.u8", num_val);
+    Dataset val = load("./data/mnist/t10k-images.f32", "./data/mnist/t10k-labels.u8", num_val);
 
     for(auto &x:val.images) {
         for(auto &y: x) {
