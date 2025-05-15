@@ -32,7 +32,7 @@ Dataset load(const std::string& img_bin, const std::string& lbl_bin, uint32_t n)
 }
 
 int main() {
-    const string experiment_name = "adam_200_epoch";
+    const string experiment_name = "200_epoch";
     const int num_train = 60000;
     const int num_val = 10000;
     const int num_epochs = 200;

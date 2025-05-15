@@ -81,6 +81,7 @@ train-labels.u8
 **How to train the model:**
 ```bash
 make main
+touch ./logs/train_[experiment_name]
 ./bin/main > ./logs/train_[experiment_name]
 ```
 

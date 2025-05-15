@@ -417,11 +417,17 @@ struct Net {
 
             for(int i = 0; i < layers[l]; i++) {
                 for(int k = 0; k < layers[l+1]; k++) {
+
+                    m[l][i][k] = beta * m[l][i][k] + (1 - beta) * dW[l][i][k];
+                    W[l][i][k] -= learning_rate * m[l][i][k];
+
+                    /*
                     m[l][i][k] = beta * m[l][i][k] + (1 - beta) * dW[l][i][k];
                     ld m_t = m[l][i][k] / (1 - pow(beta, t));
                     v[l][i][k] = gamma * v[l][i][k] + (1 - gamma) * dW[l][i][k] * dW[l][i][k];
                     ld v_t = v[l][i][k] / (1 - pow(gamma, t));
                     W[l][i][k] -= learning_rate * m_t / (sqrt(v_t) + eps);
+                    */
                 }
             }
         }
