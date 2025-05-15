@@ -64,6 +64,10 @@ train-images-idx3-ubyte
 train-labels-idx1-ubyte
 ```
 
+If the filename of thes data differ, make sure to adjust it to this.
+
+Then run `pip3 install numpy` if you don't already have numpy.
+
 Then run `make data` from the `cpp_deep_neural_det` directory. 
 You should expect to see (on the `data/mnist` directory) : 
 ```text
@@ -77,7 +81,7 @@ train-labels.u8
 **How to train the model:**
 ```bash
 make main
-./bin/main < ./logs/train_[experiment_name]
+./bin/main > ./logs/train_[experiment_name]
 ```
 
 Before running the commands, you can tune the model parameters (e.g. num of layers, learning rate schedule, weight initializations, experiment name) from the `main.cpp` file 
@@ -86,7 +90,7 @@ Before running the commands, you can tune the model parameters (e.g. num of laye
 
 ```bash
 make inference
-./bin/inference < ./logs/inference_[experiment_name]
+./bin/inference > ./logs/inference_[experiment_name]
 ```
 
 Before running the command, you can specify the experiment name and the epoch number of the weights you want to load for to be used during inference time.

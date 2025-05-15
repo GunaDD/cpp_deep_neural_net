@@ -9,12 +9,13 @@ using ld = long double;
 const int SZ = 784;
 const ld eps = 1e-15;
 const ld beta = 0.9;
+const ld gamma = 0.999;
 
 struct Net {
     /* We stack the bias on the weight and pad another column to x = [x_1 ... x_m 1] */
     vector<vector<vector<ld>>> W, H;
     /* Parameters for the gradient terms */
-    vector<vector<vector<ld>>> dW, dH, momentum;
+    vector<vector<vector<ld>>> dW, dH, m, v; // m = momentum, v = velocity
     
     string experiment_name;
     /* num_layers = # hidden layers + 1 (includes the output layer) */
@@ -37,7 +38,8 @@ struct Net {
             dH.push_back(vector<vector<ld>>(batch_size, vector<ld>(layers[i])));
         }
 
-        momentum = W;
+        m = W;
+        v = W;
 
         /* Initialize weight with Kaiming Initialization */
         const double gain = sqrt(2);
@@ -392,7 +394,7 @@ struct Net {
     }
 
     /* Updates the weights with the gradient with Adam */
-    void step(ld learning_rate) {
+    void step(ld learning_rate, int t) {
         for(int l = 0; l + 1 < num_layers; l++) {
             /* Option to clip gradients
             ld norm = 0;
@@ -415,8 +417,11 @@ struct Net {
 
             for(int i = 0; i < layers[l]; i++) {
                 for(int k = 0; k < layers[l+1]; k++) {
-                    momentum[l][i][k] = beta * momentum[l][i][k] + (1 - beta) * dW[l][i][k];
-                    W[l][i][k] -= learning_rate * momentum[l][i][k];
+                    m[l][i][k] = beta * m[l][i][k] + (1 - beta) * dW[l][i][k];
+                    ld m_t = m[l][i][k] / (1 - pow(beta, t));
+                    v[l][i][k] = gamma * v[l][i][k] + (1 - gamma) * dW[l][i][k] * dW[l][i][k];
+                    ld v_t = v[l][i][k] / (1 - pow(gamma, t));
+                    W[l][i][k] -= learning_rate * m_t / (sqrt(v_t) + eps);
                 }
             }
         }
@@ -456,6 +461,7 @@ struct Net {
             }
 
             int cur = 0;
+            int t = 0;
             while(cur < x.size()) {
                 vector<int> minibatch_indices;
                 for(int j = 0; j < batch_size && cur + j < x.size(); j++) {
@@ -471,9 +477,10 @@ struct Net {
                 forward(batch_size);
                 total_loss += cost(minibatch_Y);
                 backward(minibatch_Y);
-                step(learning_rate);
+                step(learning_rate, t);
                 zero_grad();
                 cur += batch_size;
+                t++;
             }
 
             total_loss /= x.size();
